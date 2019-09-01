@@ -1,0 +1,104 @@
+<?xml version='1.0'?>
+<%
+require 'matrix'
+require 'erb'
+require 'yaml'
+
+class Cube
+    #constants
+    M_PI = 3.1415926535897931
+    attr_accessor :base,:texture
+    def initialize(sim_env)
+        @base =  {  # object pose
+                "link_name" =>"link",
+                'pose'=> [0.0,0.0,0,0,0,0],
+                # inetia 
+                'pose_i'=> [0,0,0.035,
+                                0,0,0],                   
+                'mass'=> 0.2,
+                'ixx'=> 0.5 ,'ixy'=> 0     ,'ixz'=> 0 ,
+                'iyy'=> 0.5 ,'iyz'=> 0     ,'izz'=> 0.5,
+                'size'=>[1,1,1],
+                #color
+                "ambient"=>  [1,1,1,1],
+                "diffuse"=>  [1,1,1,1],
+                "specular"=> [1,1,1,1],
+                "emissive"=> [0, 0, 0, 1]
+            }   
+
+        path_texture ={
+                # "side1"   => "materials/textures/side.png",
+                # "side2"   => "materials/textures/side.png",
+                # "side3"   => "materials/textures/side.png",
+                # "side4"   => "materials/textures/side.png",
+                # "side5"   => "materials/textures/side.png",
+                #"base"   => "materials/textures/side.png"
+            }
+        @texture={}
+        
+        if sim_env == "gazebo"
+            #model://+default path
+            path_texture.each do |key,value|
+              @texture.merge!({key => "model://cube/"+value})
+            end
+
+        elsif sim_env == "pybullet"
+            #deafult path
+            @texture = path_texture
+        else
+            puts "Cube:   well life sucks!not everything is supported.A'nt life a bitch? "
+        end
+
+
+    end
+end
+
+
+def a_to_s(v)#converts array to string
+    Array(v).join(" ")
+end
+
+
+#####################################hand setting######################
+    #sim env setting
+    sim_env ="pybullet" #change to pybullet|gazebo 
+
+    cube = Cube.new(sim_env)
+
+%>
+<sdf version="1.5">
+    <model name="box">
+        <static>true</static>
+        <link name="link">
+            <pose frame=''><%=a_to_s(cube.base["pose"])%></pose>
+            <inertial>
+                <pose frame=''><%=a_to_s(cube.base["pose_i"])%></pose>
+                <mass><%=cube.base["mass"]%></mass>
+                <inertia>
+                    <ixx><%=cube.base["ixx"]%></ixx>
+                    <ixy><%=cube.base["ixy"]%></ixy>
+                    <ixz><%=cube.base["ixz"]%></ixz>
+                    <iyy><%=cube.base["iyy"]%></iyy>
+                    <iyz><%=cube.base["iyz"]%></iyz>
+                    <izz><%=cube.base["izz"]%></izz>
+                </inertia>
+            </inertial>
+
+            <collision name="collision">
+                <geometry>
+                    <box>
+                        <size><%=a_to_s(cube.base["size"])%></size>
+                    </box>
+                </geometry>               
+            </collision>
+            <visual name="visual">
+                <pose><%=a_to_s(cube.base["pose"])%></pose>
+                <geometry>
+                    <box>
+                        <size><%=a_to_s(cube.base["size"])%></size>
+                    </box>
+                </geometry>  
+            </visual>
+        </link>
+    </model>
+</sdf>

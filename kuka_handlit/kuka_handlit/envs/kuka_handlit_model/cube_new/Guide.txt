@@ -1,0 +1,45 @@
+How can I declare a variable in model.sdf file?
+http://answers.gazebosim.org/question/14063/how-can-i-declare-a-variable-in-modelsdf-file/
+https://bitbucket.org/osrf/gazebo_models/src/b237ea45262f51ff8d72aaa96ef19f1288723c42/cart_rigid_suspension/model.rsdf?at=default&fileviewer=file-view-default
+-----------------------------
+copying file to .gazebo/model
+cp -r ~/hand_RL_ws/src/iiwa_pybullet_integration/shadow_dep/sr_common/sr_description/hand/sdf/shadow_hand_vijay ~/.gazebo/models
+
+copying from .gazebo/model
+cp -r ~/.gazebo/models/shadow_hand ~/hand_RL_ws/src/iiwa_pybullet_integration/shadow_dep/sr_common/sr_description/hand/sdf/
+
+making the file
+erb model.sdf.erb > model.sdf
+
+------------------erb guide--------------------
+http://gazebosim.org/tutorials?tut=model_structure
+
+Including one erb file into another
+https://stackoverflow.com/questions/10236049/including-one-erb-file-into-another
+
+
+http://gazebosim.org/tutorials?tut=kinematic_loop&cat=
+https://www.stuartellis.name/articles/erb/
+https://ruby-doc.org/docs/ruby-doc-bundle/UsersGuide/rg/objinitialization.html
+https://ruby-doc.org/stdlib-2.5.1/libdoc/erb/rdoc/ERB.html
+https://blog.revathskumar.com/2014/10/ruby-rendering-erb-template.html
+---------------------Length of parts using blender----------------------
+
+------------------vscode task----------
+https://www.youtube.com/watch?v=bRiVhX1--3A
+
+
+
+------------------converting from xacro to  ursd 
+https://answers.ros.org/question/10401/how-to-convert-xacro-file-to-urdf-file/
+
+rosrun xacro xacro --inorder -o shadowhand_motor_vijay.urdf shadowhand_motor_vijay.urdf.xacro
+
+------------------conveting from urdf to sdf------------
+http://answers.gazebosim.org/question/7074/urdf-to-sdf-conversion-using-gzsdf/
+
+gzsdf print shadowhand_motor_vijay.urdf > shadowhand_motor_vijay.sdf
+
+this works:
+gz sdf -p  shadowhand_motor_vijay.urdf > shadowhand_motor_vijay.sdf 
+----------------------------------------------------
