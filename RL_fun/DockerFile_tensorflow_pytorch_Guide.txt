@@ -1,0 +1,73 @@
+step 1:
+sudo xhost +local:root
+
+step 2:
+cd /home/mamad/RL_fun/DockerFile_tensorflow_pytorch
+sudo docker build --build-arg UNAME=$USER --build-arg UID=$(id -u) --build-arg GID=$(id -g) -t nvidia_docer2_kinetic_tensorflow_pytorch:base .
+
+step3:
+sudo docker run --runtime=nvidia  -it  --name RL_fun_tf -v $(pwd)/RL_fun:$(pwd)/RL_fun  -e DISPLAY -e LOCAL_USER_ID=$(id -u)  --user=$(id -u) -e QT_X11_NO_MITSHM=1  -v /tmp/.X11-unix:/tmp/.X11-unix:rw  --net=host --privileged nvidia_docer2_kinetic_tensorflow_pytorch:base 
+************************Seting up ros****************************
+step4:
+4.1. sudo -S sh -c '. /etc/lsb-release && echo "deb http://mirrors.ustc.edu.cn/ros/ubuntu/ $DISTRIB_CODENAME main" > /etc/apt/sources.list.d/ros-latest.list' 
+4.2. sudo -S apt-key adv --keyserver hkp://ha.pool.sks-keyservers.net:80 --recv-key 421C365BD9FF1F717815A3895523BAEEB01FA116
+4.3. sudo -S apt-get update
+4.4. sudo -S  apt-get install ros-kinetic-desktop-full
+4.5. sudo -S rosdep init
+4.6. rosdep update
+4.7. echo "source /opt/ros/kinetic/setup.bash" >> ~/.bashrc
+4.8. . ~/.bashrc
+4.9. echo $PASS | sudo -S chmod +x /opt/ros/kinetic/setup.bash
+4.10.  bash /opt/ros/kinetic/setup.bash
+4.11. sudo -S  apt install python-rosinstall python-rosinstall-generator python-wstool build-essential
+
+step5:
+5.1 sudo -S  apt-get install ros-kinetic-ros-control ros-kinetic-ros-controllers 
+5.2 sudo -S apt-get install ros-kinetic-moveit
+5.3 sudo -S apt-get install graphicsmagick-libmagick-dev-compat
+5.4 sudo -S pip install pyyaml
+5.5 pip install pybullet
+***************************Setting up tensorflow*****************
+https://medium.com/@kapilvarshney/how-to-setup-ubuntu-16-04-with-cuda-gpu-and-other-requirements-for-deep-learning-f547db75f227
+
+step 6:
+Download Download cuDNN v7.5.0 (Feb 21, 2019), for CUDA 9.2:
+1. Download cuDNN Library for Linux
+	cd cuda/
+	sudo cp -P lib/* /usr/local/cuda/lib64/
+	sudo cp -P include/* /usr/local/cuda/include/
+2. cuDNN Runtime Library for Ubuntu16.04 (Deb)
+3. cuDNN Developer Library for Ubuntu16.04 (Deb)
+4.  pip install --upgrade pip==9.0.1
+5.sudo  pip install tensorflow-gpu==1.8
+6. sudo apt install cuda-toolkit-9-0
+7. echo "export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda-9.2/lib64/" >> ~/.bashrc
+
+****************************Setting up anaconda**************************
+sudo apt-get update; sudo apt-get install curl
+cd /tmp
+curl -O https://repo.continuum.io/archive/Anaconda3-5.0.1-Linux-x86_64.sh
+sha256sum Anaconda3-5.0.1-Linux-x86_64.sh
+bash Anaconda3-5.0.1-Linux-x86_64.sh
+source ~/.bashrc
+export PATH=~/anaconda3/bin:$PATH
+****************************Setting up pytorch***************************
+conda install pytorch torchvision cudatoolkit=10.0 -c pytorch
+*******************************python 3.6****************************
+sudo add-apt-repository ppa:jonathonf/python-3.6
+sudo apt-get update
+sudo apt-get install python3.6
+sudo apt-get install python3-pip
+************************************************
+pip install gym
+*******
+*************install swig**********************
+sudo apt-get install swig
+sudo apt-get install python-dev
+sudo apt-get install python3-dev
+
+pip uninstall box2d-py
+pip install box2d-py
+
+pip install box2d box2d-kengz
+
