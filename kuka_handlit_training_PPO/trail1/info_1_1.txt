@@ -1,0 +1,80 @@
+observation function:
+"kuka_world"
+
+
+reward function:
+  def _reward(self):
+   
+    """
+    positive reward:
+    reward the agent if it gets closer to target endeffector
+    reward agent if picked up object
+    reward agent for getting each finger as close as possible to object surface
+    negative reward:
+    punish agent for self collision
+    punish aget for collsion wit table 
+    """
+    worldFrame = [self._observation_frames[0],self._observation_frames[1],self._observation_frames[4],self._observation_frames[5]]
+    isWorldFrame =  self._observation_frame in worldFrame
+
+    if isWorldFrame:
+      weights = {"kuka_OR_palm":1,"fingers":1}
+
+      kukaEE_OR_palm_dist = self._observation[0]
+      FF_dist = self._observation[1]
+      MF_dist = self._observation[2]
+      RF_dist = self._observation[3]
+      TH_dist = self._observation[4]
+
+      reward = -1*(weights["kuka_OR_palm"]*kukaEE_OR_palm_dist+weights["fingers"]*FF_dist+weights["fingers"]*MF_dist+weights["fingers"]*RF_dist+weights["fingers"]*TH_dist)
+
+    if not isWorldFrame:
+      weights = {"kuka_OR_palm_x":1,"kuka_OR_palm_y":1,"kuka_OR_palm_z":1,"fingers_x":1,"fingers_y":1,"fingers_z":1}
+
+      kukaEE_OR_palm_dist_x,kukaEE_OR_palm_dist_y,kukaEE_OR_palm_dist_z = self._observation[0:3]
+      FF_dist_x,FF_dist_y,FF_dist_z = self._observation[3:6]
+      MF_dist_x,MF_dist_y,MF_dist_z = self._observation[6:9]
+      RF_dist_x,RF_dist_y,RF_dist_z = self._observation[9:12]
+      TH_dist_x,TH_dist_y,TH_dist_z = self._observation[12:15]
+
+      kuka_reward = -1*(weights["kuka_OR_palm_x"]*kukaEE_OR_palm_dist_x+weights["kuka_OR_palm_y"]*kukaEE_OR_palm_dist_y+weights["kuka_OR_palm_z"]*kukaEE_OR_palm_dist_z)
+      
+      reward_fingers_x = -1*weights["fingers_x"]*(FF_dist_x+MF_dist_x+RF_dist_x,TH_dist_x)
+      reward_fingers_y = -1*weights["fingers_y"]*(FF_dist_y+MF_dist_y+RF_dist_y,TH_dist_y)
+      reward_fingers_z = -1*weights["fingers_z"]*(FF_dist_z+MF_dist_z+RF_dist_z,TH_dist_z)
+
+      reward = kuka_reward+reward_fingers_x+reward_fingers_y+reward_fingers_z
+    
+    
+    contactPoints = self.check_if_self_collision_has_happend()
+    contact = self.check_if_collsion_with_table_has_happend() 
+    """
+    if contactPoints == True:
+      reward += -2000
+    if contact ==True:
+      reward += -3000
+    """
+    print("reward:::",reward)
+    return reward
+
+Network parameters:
+
+    ############## Hyperparameters ##############
+  
+    solved_reward = 1         # stop training if avg_reward > solved_reward
+    log_interval = 20           # print avg reward in the interval
+    max_episodes = 10000        # max training episodes
+    max_timesteps = 1500        # max timesteps in one episode
+    
+    update_timestep = 4000      # update policy every n timesteps
+    action_std = 0.5            # constant std for action distribution (Multivariate Normal)
+    K_epochs = 80               # update policy for K epochs
+    eps_clip = 0.2              # clip parameter for PPO
+    gamma = 0.99                # discount factor
+    
+    lr = 0.0003                 # parameters for Adam optimizer
+    betas = (0.9, 0.999)
+    
+    random_seed = None
+    #############################################
+
