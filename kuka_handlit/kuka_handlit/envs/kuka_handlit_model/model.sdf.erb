@@ -1,0 +1,2029 @@
+<?xml version="1.0" ?>
+<!--This file contains the SDF model of a KUKA iiwa robot with a wsg50 gripper.
+    It has been produced from the varients in //third_party/robotics/models.
+    Note:  This file is temporary, and should be deleted once Bullet supports
+    importing models in SDF.  Also, this file has been specialized for Bullet,
+    because the mass of the base link has been set to 0, as needed by Bullet.
+    Note:  All of the gripper link poses have been adjusted in the z direction
+    to achieve a reasonable position of the gripper relative to the arm.
+    Note: The joint names for the KUKA have been changed to J0, J1, etc. -->
+    <!--There is problem with the kuka mesh and everytime i use it gazebo crashes so I am gonna comment that part-->
+    <%
+
+require 'matrix'
+require 'erb'
+require 'yaml'
+
+    def a_to_s(v)#converts array to string
+      Array(v).join(" ")
+    end
+
+    class Kuka
+        attr_accessor :lbr_iiwa_link_0,:lbr_iiwa_link_1,:lbr_iiwa_link_2,:lbr_iiwa_link_3,:lbr_iiwa_link_4,:lbr_iiwa_link_5,:lbr_iiwa_link_6,:lbr_iiwa_link_7,:mesh_v,:mesh_c,:model
+        def initialize(sim_env,load_setting)
+          @lbr_iiwa_link_0={
+            # link 
+            "link_name"     =>"lbr_iiwa_link_0",
+            'pose' =>[0,0,0,
+                    0,0,0],
+            #inertia
+            'pose_i'=>[-0.1,0,0.07,
+                       0,0,0],
+            'mass'=>5,
+            'ixx'=> 0.05 ,'ixy'=> 0     ,'ixz'=> 0 ,
+            'iyy'=> 0.06 ,'iyz'=> 0     ,'izz'=>0.03,
+            #mesh
+            'scale'=>[1,1,1],
+            #material
+            'ambient'  => [1,0,0,1],
+            'diffuse'  => [0.2,0.2,0.2,1.0],
+            'specular' => [0.4,0.4,0.4,1],
+            'emissive' => [0,0,0,0],
+              # joint 
+              "p_name"     =>"world",
+              "j_name"     =>"world",
+              "j_type"     =>"fixed"
+           
+          }
+          @lbr_iiwa_link_1={
+            #link
+            "link_name"       =>"lbr_iiwa_link_1",
+            'pose' =>[0,0,0.1575,
+                    0,0,0],
+            #inertia
+            'pose_i'=>[0,0.03 ,0.12,
+                       0,0,0],
+            'mass'=>3.4525,
+            'ixx'=> 0.1 ,'ixy'=> 0     ,'ixz'=> 0 ,
+            'iyy'=> 0.09 ,'iyz'=> 0     ,'izz'=>0.02,
+            #mesh
+            'scale'=>[1,1,1],
+            #material
+            'ambient'  => [0.392, 0.549, 0.784,1],
+            'diffuse'  => [0.392, 0.549, 0.784,1],
+            'specular' => [0.392, 0.549, 0.784,1],
+            'emissive' => [0,0,0,0],
+            # joint 
+            "p_name"     =>"lbr_iiwa_link_0",
+            "j_name"     =>"J0",
+            "j_type"     =>"revolute",
+            "j_axis"     => [0,0,1],
+            "j_limit"    => [-2.96706,2.96706], #[lower,upper]
+            "j_effort"   => 300,
+            "j_velocity" => 10,
+            "j_damping"  => 0.5, 
+            "friction"   => 0,
+            "spring_reference" => 0,
+            "spring_stiffness" => 0
+          }
+          @lbr_iiwa_link_2={
+            #link
+            "link_name"       =>"lbr_iiwa_link_2",
+            'pose' =>[0,0,0.36,
+                     1.5708,0,-3.14159],
+            #inertia
+            'pose_i'=>[0.0003,0.059,0.042,
+                       0,0,0],
+            'mass'=>3.4821,
+            'ixx'=> 0.05  ,'ixy'=> 0     ,'ixz'=> 0 ,
+            'iyy'=> 0.018 ,'iyz'=> 0     ,'izz'=>044,
+            #mesh
+            'scale'=>[1,1,1],
+            #material
+            'ambient'  => [0.392, 0.549, 0.784,1],
+            'diffuse'  => [0.392, 0.549, 0.784,1],
+            'specular' => [0.392, 0.549, 0.784,1],
+            'emissive' => [0,0,0,0],
+            # joint 
+            "p_name"     =>"lbr_iiwa_link_1",
+            "j_name"     =>"J1",
+            "j_type"     =>"revolute",
+            "j_axis"     => [0,0,1],
+            "j_limit"    => [-2.0944,2.0944], #[lower,upper]
+            "j_effort"   => 300,
+            "j_velocity" => 10,
+            "j_damping"  => 0.5, 
+            "friction"   => 0,
+            "spring_reference" => 0,
+            "spring_stiffness" => 0
+          }
+          @lbr_iiwa_link_3={
+            #link
+            "link_name"       =>"lbr_iiwa_link_3",
+            'pose' =>[0,0, 0.5645,
+                    0,0,0],
+            #inertia
+            'pose_i'=>[0,0.03 ,0.13,
+                       0,0,0],
+            'mass'=>4.05623,
+            'ixx'=> 0.08 ,'ixy'=> 0     ,'ixz'=> 0 ,
+            'iyy'=> 0.075 ,'iyz'=> 0     ,'izz'=>0.01,
+            #mesh
+            'scale'=>[1,1,1],
+            #material
+            'ambient'  => [1.0 ,0.423529411765 ,0.0392156862745,1],
+            'diffuse'  => [1.0 ,0.423529411765 ,0.0392156862745 ,1.0],
+            'specular' => [1.0 ,0.423529411765 ,0.0392156862745 ,1],
+            'emissive' => [0,0,0,0],
+            # joint 
+            "p_name"     =>"lbr_iiwa_link_2",
+            "j_name"     =>"J2",
+            "j_type"     =>"revolute",
+            "j_axis"     => [0,0,1],
+            "j_limit"    => [-2.96706,2.96706], #[lower,upper]
+            "j_effort"   => 300,
+            "j_velocity" => 10,
+            "j_damping"  => 0.5, 
+            "friction"   => 0,
+            "spring_reference" => 0,
+            "spring_stiffness" => 0
+          }
+          @lbr_iiwa_link_4={
+            #link
+            "link_name"       =>"lbr_iiwa_link_4",
+            'pose' =>[0,0,0.78,
+                      1.5708,0,0],
+            #inertia
+            'pose_i'=>[0,0.067,0,
+                       0.034,0,0],
+            'mass'=>3.4822,
+            'ixx'=> 0.03 ,'ixy'=> 0     ,'ixz'=> 0 ,
+            'iyy'=> 0.01 ,'iyz'=> 0     ,'izz'=>0.029,
+            #mesh
+            'scale'=>[1,1,1],
+            #material
+            'ambient'  => [0.392, 0.549, 0.784,1],
+            'diffuse'  => [0.392, 0.549, 0.784,1],
+            'specular' => [0.392, 0.549, 0.784,1],
+            'emissive' => [0,0,0,0],
+            # joint 
+            "p_name"     =>"lbr_iiwa_link_3",
+            "j_name"     =>"J3",
+            "j_type"     =>"revolute",
+            "j_axis"     => [0,0,1],
+            "j_limit"    => [-2.0944,2.0944], #[lower,upper]
+            "j_effort"   => 300,
+            "j_velocity" => 10,
+            "j_damping"  => 0.5, 
+            "friction"   => 0,
+            "spring_reference" => 0,
+            "spring_stiffness" => 0
+          }
+          @lbr_iiwa_link_5={
+            #link
+            "link_name"       =>"lbr_iiwa_link_5",
+            'pose' =>[0,0,0.9645,
+                    0,0,-3.14159],
+            #inertia
+            'pose_i'=>[0.0001,0.021,0.076,
+                       0,0,0],
+            'mass'=>2.1633,
+            'ixx'=> 0.02 ,'ixy'=> 0     ,'ixz'=> 0 ,
+            'iyy'=> 0.018 ,'iyz'=> 0     ,'izz'=>0.005,
+            #mesh
+            'scale'=>[1,1,1],
+            #material
+            'ambient'  => [0.392, 0.549, 0.784,1],
+            'diffuse'  => [0.392, 0.549, 0.784,1],
+            'specular' => [0.392, 0.549, 0.784,1],
+            'emissive' => [0,0,0,0],
+            # joint 
+            "p_name"     =>"lbr_iiwa_link_4",
+            "j_name"     =>"J4",
+            "j_type"     =>"revolute",
+            "j_axis"     => [0,0,1],
+            "j_limit"    => [-2.96706,2.96706], #[lower,upper]
+            "j_effort"   => 300,
+            "j_velocity" => 10,
+            "j_damping"  => 0.5, 
+            "friction"   => 0,
+            "spring_reference" => 0,
+            "spring_stiffness" => 0
+          }
+          @lbr_iiwa_link_6={
+            #link
+            "link_name"       =>"lbr_iiwa_link_6",
+            'pose' =>[0,0,1.18,
+                      1.5708,0,-3.14159],
+            #inertia
+            'pose_i'=>[0,0.0006,0.0004,
+                       0,0,0],
+            'mass'=>2.3466,
+            'ixx'=> 0.005 ,'ixy'=> 0     ,'ixz'=> 0 ,
+            'iyy'=> 0.0036 ,'iyz'=> 0     ,'izz'=>0.0047,
+            #mesh
+            'scale'=>[1,1,1],
+            #material
+            'ambient'  => [1,0,0,1],
+            'diffuse'  => [1.0,0.423529411765,0.0392156862745,1.0],
+            'specular' => [0.5,0.5,0.5,1],
+            'emissive' => [0,0,0,0],
+            # joint 
+            "p_name"     =>"lbr_iiwa_link_5",
+            "j_name"     =>"J5",
+            "j_type"     =>"revolute",
+            "j_axis"     => [0,0,1],
+            "j_limit"    => [-2.0944,2.0944], #[lower,upper]
+            "j_effort"   => 300,
+            "j_velocity" => 10,
+            "j_damping"  => 0.5, 
+            "friction"   => 0,
+            "spring_reference" => 0,
+            "spring_stiffness" => 0
+          }
+          @lbr_iiwa_link_7={
+            #link
+            "link_name"       =>"lbr_iiwa_link_7",
+            'pose' =>[0,0,1.261,
+                    0,0,0],
+            #inertia
+            'pose_i'=>[0,0,0.02,
+                       0,0,0],
+            'mass'=>3.129,
+            'ixx'=> 0.001 ,'ixy'=> 0     ,'ixz'=> 0 ,
+            'iyy'=> 0.001 ,'iyz'=> 0     ,'izz'=>0.001,
+            #mesh
+            'scale'=>[1,1,1],
+            #material
+            'ambient'  => [1.0 ,0.423529411765 ,0.0392156862745,1],
+            'diffuse'  => [1.0 ,0.423529411765 ,0.0392156862745 ,1.0],
+            'specular' => [1.0 ,0.423529411765 ,0.0392156862745 ,1],
+            'emissive' => [0,0,0,0],
+            # joint 
+            "p_name"     =>"lbr_iiwa_link_6",
+            "j_name"     =>"J6",
+            "j_type"     =>"revolute",
+            "j_axis"     => [0,0,1],
+            "j_limit"    => [-3.05433,3.05433], #[lower,upper]
+            "j_effort"   => 300,
+            "j_velocity" => 10,
+            "j_damping"  => 0.5, 
+            "friction"   => 0,
+            "spring_reference" => 0,
+            "spring_stiffness" => 0
+          }
+          @mesh_c ={}
+          @mesh_v ={}
+          path_c = {"lbr_iiwa_link_0"=>"meshes/link_0.stl",
+                    "lbr_iiwa_link_1"=>"meshes/link_1.stl",
+                    "lbr_iiwa_link_2"=>"meshes/link_2.stl",
+                    "lbr_iiwa_link_3"=>"meshes/link_3.stl",
+                    "lbr_iiwa_link_4"=>"meshes/link_4.stl",
+                    "lbr_iiwa_link_5"=>"meshes/link_5.stl",
+                    "lbr_iiwa_link_6"=>"meshes/link_6.stl",
+                    "lbr_iiwa_link_7"=>"meshes/link_7.stl"
+                   }
+          path_v = {"lbr_iiwa_link_0"=>"meshes/link_0.stl",
+                    "lbr_iiwa_link_1"=>"meshes/link_1.stl",
+                    "lbr_iiwa_link_2"=>"meshes/link_2.stl",
+                    "lbr_iiwa_link_3"=>"meshes/link_3.stl",
+                    "lbr_iiwa_link_4"=>"meshes/link_4.stl",
+                    "lbr_iiwa_link_5"=>"meshes/link_5.stl",
+                    "lbr_iiwa_link_6"=>"meshes/link_6.stl",
+                    "lbr_iiwa_link_7"=>"meshes/link_7.stl"
+                  }
+          @model= {
+                    "KUKA"=>{
+                            "Body"=>{
+                                "Links"=>{}
+                            }
+                    }
+                }
+          def loadYamlAndChange()
+              file = YAML.load_file("config.yml")
+              #print file 
+           
+                  
+              #print finger
+              link_list = [ @lbr_iiwa_link_0,@lbr_iiwa_link_1, @lbr_iiwa_link_2, @lbr_iiwa_link_3,
+                            @lbr_iiwa_link_4, @lbr_iiwa_link_5, @lbr_iiwa_link_6, @lbr_iiwa_link_7]
+              links = file["Kuka"]["Links"]
+              links.each do |linkName,link|
+  
+                  color = link["color"]
+                  mass  = link["mass"]
+                
+                    
+                 
+                  link_counter = 1
+  
+                  if linkName == "lbr_iiwa_link_0"
+                      #visual
+                      @lbr_iiwa_link_0["ambient"] = color["ambient"]
+                      @lbr_iiwa_link_0["diffuse"] = color["diffuse"]
+                      @lbr_iiwa_link_0["specular"] = color["specular"]
+                      @lbr_iiwa_link_0["emissive"] = color["emissive"]
+                      #physical prop
+                      @lbr_iiwa_link_0["mass"] = mass
+  
+  
+                  else
+                    joint = link["joint"]
+                    loop do
+                        if linkName == "lbr_iiwa_link_"+link_counter.to_s
+                            #visual
+                            link_list[link_counter]["ambient"] = color["ambient"]
+                            link_list[link_counter]["diffuse"] = color["diffuse"]
+                            link_list[link_counter]["specular"] = color["specular"]
+                            link_list[link_counter]["emissive"] = color["emissive"]
+                            #physical prop
+                            link_list[link_counter]["mass"] = mass
+                            link_list[link_counter]["j_damping"] = joint["damping"]
+                            link_list[link_counter]["j_friction"] = joint["friction"]
+                        end 
+                        if link_counter == link_list.length-1
+                            break
+                        end
+                        link_counter +=1
+                    end
+  
+                  end
+              end
+                
+              
+          end
+          def generate_model_forReset()
+            link_list = [ @lbr_iiwa_link_0,@lbr_iiwa_link_1,@lbr_iiwa_link_2,@lbr_iiwa_link_3,
+                          @lbr_iiwa_link_4,@lbr_iiwa_link_5,@lbr_iiwa_link_6,@lbr_iiwa_link_7]
+            i=0
+            loop do
+          
+                @model["KUKA"]["Body"]["Links"][link_list[i]["link_name"]]={ 
+        
+                        "mass"      =>link_list[i]["mass"],
+
+                        "color"     =>{
+                            'ambient'  => link_list[i]["ambient"] ,                                              
+                            'specular' => link_list[i]["specular"],
+                            'emissive' => link_list[i]["emissive"],
+                            'diffuse' => link_list[i]["diffuse"] 
+                        },
+                        "joint"     =>{
+
+                            "damping"     =>link_list[i]["j_damping"],
+                            "friction"      =>link_list[i]["j_friction"]
+
+                        }
+                    }
+                if i == link_list.length-1
+                 break
+                end
+                i +=1
+          
+            end
+        
+          end 
+          def generate_model()
+            link_list = [ @lbr_iiwa_link_0,@lbr_iiwa_link_1, @lbr_iiwa_link_2, @lbr_iiwa_link_3,
+                         @lbr_iiwa_link_4, @lbr_iiwa_link_5, @lbr_iiwa_link_6, @lbr_iiwa_link_7]
+            i=0
+            loop do
+                @model["KUKA"]["Body"]["Links"][link_list[i]["link_name"]] ={ 
+                                                    "link_name"  => link_list[i]["link_name"],
+                                                    "pose"      => link_list[i]["pose"],
+                                                    "mass"      =>link_list[i]["mass"],
+                                                    "inertial"  => {
+                                                        "pose_i" =>link_list[i]["pose_i"],
+                                                        "ixx"    =>link_list[i]["ixx"],
+                                                        "ixy"    =>link_list[i]["ixy"],
+                                                        "ixz"    =>link_list[i]["ixz"],
+                                                        "iyy"    =>link_list[i]["iyy"],
+                                                        "iyz"    =>link_list[i]["iyz"],
+                                                        "izz"    =>link_list[i]["izz"],
+                                                        
+                                                    },
+                                                   # "color"     =>{
+                                                   #     'ambient'  => link_list[i]["ambient"] ,                                              'diffuse'  => .6,1],
+                                                   #     'specular' => link_list[i]["specular"],
+                                                   #     'emissive' => link_list[i]["emissive"],
+                                                   #     'diffuse' => link_list[i]["diffuse"] 
+                                                   # },
+                                                    "joint"     =>{
+                                                        "p_name"    =>link_list[i]["p_name"],
+                                                        "j_name"    =>link_list[i]["j_name"],
+                                                        "j_type"    =>link_list[i]["j_type"],
+                                                        "j_axis"    =>link_list[i]["j_axis"],
+                                                        "j_limit"    =>link_list[i]["j_limit"],
+                                                        "j_effort"    =>link_list[i]["j_effort"],
+                                                        "j_velocity"    =>link_list[i]["j_velocity"],
+                                                        "j_damping"    =>link_list[i]["j_damping"],
+                                                        "friction"    =>link_list[i]["friction"]
+                                                        
+                                                    }
+                                               }
+               
+                if i ==7
+                    break
+                end
+                i +=1
+            end
+        
+          end
+          if load_setting == true
+            loadYamlAndChange()
+            generate_model()
+          else
+              generate_model_forReset()
+          end
+          if sim_env == "gazebo"
+            #model://+default path
+            path_c.each do |key,value|
+              @mesh_c.merge!({key => "model://kuka_handlit/"+value})
+            end
+            path_v.each do |key,value|
+              @mesh_v.merge!({key => "model://kuka_handlit/"+value})
+            end
+    
+          elsif sim_env == "pybullet"
+            #deafult path
+            @mesh_v = path_v
+            @mesh_c = path_c
+          else
+            puts "well life sucks!not everything is supported.A'nt life a bitch? "
+          end
+    
+    
+        end
+    end
+    class Base
+        #constants
+        M_PI = 3.1415926535897931
+        attr_accessor :forearm,:palm,:palm_fake,:mesh_c,:mesh_v,:model
+        def initialize(sim_env,load_setting,kuka_ee)
+            @forearm ={  # link
+                        'link_name'=>"forearm",
+                        'pose'=> [0+kuka_ee["pose"][0],0+kuka_ee["pose"][1],0+kuka_ee["pose"][2],
+                                       0,0,M_PI/2],
+                        # inetia 
+                        'pose_i'=> [0,0,0.09,
+                                         0,0,0],                   
+                        'mass'=> 1.8,
+                        'ixx'=> 0.108 ,'ixy'=> 0     ,'ixz'=> 0 ,
+                        'iyy'=> 0.108 ,'iyz'=> 0     ,'izz'=> 0.054 ,
+                        #joint
+                        "p_name" =>kuka_ee["link_name"],
+                        "j_name" =>"forearm_world",
+                        "j_type" =>'fixed',
+                        #color
+                        "ambient"=>  [0,0,0,1],
+                        "diffuse"=>  [0,0,0,1],
+                        "specular"=> [0,0,0,1],
+                        "emissive"=> [0,0,0,0]
+            }
+    
+            @palm =  {  # link
+                    'link_name'=>"palm",
+                    'pose'=> [0+forearm['pose'][0],
+                             -0.015+forearm['pose'][1],
+                              0.149+forearm['pose'][2],
+                             -40*M_PI/180,0,0],
+                    # inetia 
+                    'pose_i'=> [0,0,0.035,
+                                    0,0,0],                   
+                    'mass'=> 0.3,
+                    'ixx'=> 0.0003581 ,'ixy'=> 0     ,'ixz'=> 0 ,
+                    'iyy'=> 0.0005287 ,'iyz'=> 0     ,'izz'=> 0.000191 ,
+                    #joint
+                    "p_name" =>"forearm",
+                    "j_name" =>"palm_forearm",
+                    "j_type" =>'fixed',
+                    #color
+                    "ambient"=>  [0,0,0,1],
+                    "diffuse"=>  [0,0,0,1],
+                    "specular"=> [0,0,0,1],
+                    "emissive"=> [0,0,0,0]
+            }
+            #This link is used for reward calculation
+            @palm_fake = {
+                'link_name'=>"palm_fake",
+                'pose'=> [-0.01+palm['pose'][0],
+                         0.035+0.000909+palm['pose'][1],
+                          0.002+0.0379+palm['pose'][2],
+                         -40*M_PI/180,0,0],
+                # inetia 
+                'pose_i'=> [0,0,0.0,
+                                0,0,0],                   
+                'mass'=> 0.0000000000000000000000000000000000000000000000000000000000000000000000000000000000001,
+                'ixx'=> 0.0 ,'ixy'=> 0     ,'ixz'=> 0 ,
+                'iyy'=> 0.0 ,'iyz'=> 0     ,'izz'=> 0.0 ,
+                #joint
+                "p_name" =>"palm",
+                "j_name" =>"palm_palm_fake",
+                "j_type" =>'fixed',
+                #color
+                "ambient"=>  [0,0,0,1],
+                "diffuse"=>  [0,0,0,1],
+                "specular"=> [0,0,0,1],
+                "emissive"=> [0,0,0,0]
+
+            }
+            @model={"BASE"=>{"Links"=>{}}}
+            def loadYamlAndChange()
+                file = YAML.load_file("config.yml")
+                #print file 
+             
+                    
+                #print finger
+                links = file["BASE"]["Links"]
+                links.each do |linkName,link|
+    
+                    color = link["color"]
+                    mass  = link["mass"]
+                    if !(linkName == "forearm")
+                        joint = link["joint"]
+                    end
+                    
+    
+                    if linkName == "forearm"
+                        #visual
+                        @forearm["ambient"] = color["ambient"]
+                        @forearm["diffuse"] = color["diffuse"]
+                        @forearm["specular"] = color["specular"]
+                        @forearm["emissive"] = color["emissive"]
+                        #physical prop
+                        @forearm["mass"] = mass
+    
+    
+                    elsif linkName== "palm"
+                        #visual
+                        @palm["ambient"] = color["ambient"]
+                        @palm["diffuse"] = color["diffuse"]
+                        @palm["specular"] = color["specular"]
+                        @palm["emissive"] = color["emissive"]
+                        #physical prop
+                        @palm["mass"] = mass
+    
+    
+                    end
+                end
+                  
+                
+            end
+    
+            def generate_model()
+                link_list = [ @forearm, @palm]
+                i=0
+                loop do
+              
+                    @model["BASE"]["Links"][link_list[i]["link_name"]]={ 
+                                                                "link_name"  => link_list[i]["link_name"],
+                                                                "pose"      => link_list[i]["pose"],
+                                                                "mass"      =>link_list[i]["mass"],
+                                                                "inertial"  => {
+                                                                    "pose_i" =>link_list[i]["pose_i"],
+                                                                    "ixx"    =>link_list[i]["ixx"],
+                                                                    "ixy"    =>link_list[i]["ixy"],
+                                                                    "ixz"    =>link_list[i]["ixz"],
+                                                                    "iyy"    =>link_list[i]["iyy"],
+                                                                    "iyz"    =>link_list[i]["iyz"],
+                                                                    "izz"    =>link_list[i]["izz"],
+    
+                                                                },
+                                                                "joint"     =>{
+                                                                    "p_name"        =>link_list[i]["p_name"],
+                                                                    "j_name"        =>link_list[i]["j_name"],
+                                                                    "j_type"        =>link_list[i]["j_type"],
+                                                                    "j_axis"        =>link_list[i]["j_axis"],
+                                                                    "j_limit"       =>link_list[i]["j_limit"],
+                                                                    "j_effort"      =>link_list[i]["j_effort"],
+                                                                    "j_velocity"    =>link_list[i]["j_velocity"],
+                                                                    "j_damping"     =>link_list[i]["j_damping"],
+                                                                    "friction"      =>link_list[i]["friction"]
+    
+                                                                }
+                    }
+                    if i ==1
+                     break
+                    end
+                    i =+1
+               end
+               #print @model
+            end
+            def generate_model_forReset()
+                link_list = [ @forearm, @palm]
+                i=0
+                loop do
+              
+                    @model["BASE"]["Links"][link_list[i]["link_name"]]={ 
+            
+                            "mass"      =>link_list[i]["mass"],
+    
+                            "color"     =>{
+                                'ambient'  => link_list[i]["ambient"] ,                                              
+                                'specular' => link_list[i]["specular"],
+                                'emissive' => link_list[i]["emissive"],
+                                'diffuse' => link_list[i]["diffuse"] 
+                            },
+                            "joint"     =>{
+    
+                                "damping"     =>link_list[i]["j_damping"],
+                                "friction"      =>link_list[i]["j_friction"]
+    
+                            }
+                        }
+                    if i == link_list.length-1
+                     break
+                    end
+                    i +=1
+              
+               end
+            
+            end
+            if load_setting == true
+                loadYamlAndChange()
+                generate_model()
+            else
+                generate_model_forReset()
+            end
+            
+            path_v ={
+                "palm"      => "meshes/palm2.dae",
+                "forearm"   =>"meshes/forearm_lite.dae",
+        
+            }
+            path_c ={
+                "palm"      => "meshes/palm2_c.dae",
+                "forearm"   =>"meshes/forearm_lite.dae",
+                  
+            }
+            @mesh_c={}
+            @mesh_v={}
+            
+            if sim_env == "gazebo"
+                #model://+default path
+                path_c.each do |key,value|
+                  @mesh_c.merge!({key => "model://kuka_handlit/"+value})
+                end
+                path_v.each do |key,value|
+                  @mesh_v.merge!({key => "model://kuka_handlit/"+value})
+                end
+            
+            elsif sim_env == "pybullet"
+                #deafult path
+                @mesh_v = path_v
+                @mesh_c = path_c
+            else
+                puts "Fingers:   well life sucks!not everything is supported.A'nt life a bitch? "
+            end 
+        end
+    end
+    class Finger
+        #constants
+        M_PI = 3.1415926535897931
+        attr_accessor :knuckle,:proximal,:middle,:distal,:palm,:fingername,:mesh_c,:mesh_v,:model
+        def initialize(sim_env,load_setting,palm,biase,fingername)
+            @fingername = fingername
+            @palm = palm
+            @knuckle ={ #link
+                        'link_name'=>"knuckle_"+fingername,
+                        'pose'=> [-0.033+palm['pose'][0]+biase[0],
+                                0.0611+palm['pose'][1]+biase[1],
+                                0.07277+palm['pose'][2]+biase[2],
+                                -0.698132,0,0],
+                        # inetia 
+                        'pose_i'=> [0,0,0,
+                                    0,0,0],                   
+                        'mass'=> 0.008,
+                        'ixx'=> 0.00000026 ,'ixy'=> 0     ,'ixz'=> 0 ,
+                        'iyy'=> 0.00000026 ,'iyz'=> 0     ,'izz'=>0.00000032,
+                        # joint 
+                        "name"       =>"knuckle",
+                        "p_name"       =>"palm",
+                        "j_name"     =>"J4_"+fingername,
+                        "j_type"     =>"revolute",
+                        "j_axis"     => [0,0.766044,-0.642788],
+                        "j_limit"    => [-0.349066,0.349066], #[lower,upper]
+                        "j_effort"   => 2.0,
+                        "j_velocity" => 2.0,
+                        "j_damping"  => 0.1 ,
+                        "j_friction" => 0,
+                        #color
+                        "ambient"=>  [0,0,0,1],
+                        "diffuse"=>  [0,0,0,1],
+                        "specular"=> [0,0,0,1],
+                        "emissive"=> [0,0,0,0]
+            }
+            @proximal = {  # link
+                        'link_name'=>"proximal_"+fingername,
+                        'pose'=> [0+knuckle['pose'][0],
+                                0+knuckle['pose'][1],
+                                0+knuckle['pose'][2],
+                                0+knuckle['pose'][3],0,0],
+                        # inetia 
+                        'pose_i'=> [0,0,0.0225,
+                                        0,0,0],                   
+                        'mass'=> 0.030,
+                        'ixx'=> 0.0000098 ,'ixy'=> 0     ,'ixz'=> 0 ,
+                        'iyy'=> 0.00001 ,'iyz'=> 0     ,'izz'=>0.0000018 ,
+                        # joint 
+                        "p_name"     =>"knuckle_"+fingername,
+                        "j_name"     =>"J3_"+fingername,
+                        "j_type"     =>"revolute",
+                        "j_axis"     => [1,0,0],
+                        "j_limit"    => [0,1.5708], #[lower,upper]
+                        "j_effort"   => 2.0,
+                        "j_velocity" => 2.0,
+                        "j_damping"  => 0.1 ,
+                        "j_friction" => 0,
+                        #color
+                        "ambient"=>  [0,0,0,1],
+                        "diffuse"=>  [0,0,0,1],
+                        "specular"=> [0,0,0,1],
+                        "emissive"=> [0,0,0,0]
+                           
+            } 
+            @middle =   {  # link
+                        'link_name'=>"middle_"+fingername,
+                        'pose'=> [0+proximal['pose'][0],
+                                0.02889+proximal['pose'][1],
+                                0.034476+proximal['pose'][2],
+                                0+proximal['pose'][3],0,0],
+                        # inetia 
+                        'pose_i'=> [0,0,0.0125,
+                                        0,0,0],                   
+                        'mass'=> 0.017,
+                        'ixx'=>0.0000026 ,'ixy'=> 0     ,'ixz'=> 0 ,
+                        'iyy'=>0.0000027 ,'iyz'=> 0     ,'izz'=>0.00000087,
+                        # joint 
+                        "p_name"     =>"proximal_"+fingername,
+                        "j_name"     =>"J2_"+fingername,
+                        "j_type"     =>"revolute",
+                        "j_axis"     => [1,0,0],
+                        "j_limit"    => [0,1.5708], #[lower,upper]
+                        "j_effort"   => 2.0,
+                        "j_velocity" => 2.0,
+                        "j_damping"  => 0.1 ,
+                        "j_friction" => 0,
+                        #color
+                        "ambient"=>  [0,0,0,1],
+                        "diffuse"=>  [0,0,0,1],
+                        "specular"=> [0,0,0,1],
+                        "emissive"=> [0,0,0,0]
+            }
+            @distal =   {  # link
+                            'link_name'=>"distal_"+fingername,
+                            'pose'=> [0+middle['pose'][0],
+                                      0.01607+middle['pose'][1],
+                                      0.019151+middle['pose'][2],
+                                      0+middle['pose'][3],0,0],
+                            # inetia 
+                            'pose_i'=> [0,0,0.012,
+                                            0,0,0],                   
+                            'mass'=> 0.012,
+                            'ixx'=>0.00000094 ,'ixy'=> 0     ,'ixz'=> 0 ,
+                            'iyy'=>0.0000011 ,'iyz'=> 0     ,'izz'=>0.00000053,
+                            # joint 
+                            "p_name"     =>"middle_"+fingername,
+                            "j_name"     =>"J1_"+fingername,
+                            "j_type"     =>"revolute",
+                            "j_axis"     => [1,0,0],
+                            "j_limit"    => [0,1.5708], #[lower,upper]
+                            "j_effort"   => 2.0,
+                            "j_velocity" => 2.0,
+                            "j_damping"  => 0.1 ,
+                            "j_friction" => 0,
+                            #color
+                            "ambient"=>  [0,0,0,1],
+                            "diffuse"=>  [0,0,0,1],
+                            "specular"=> [0,0,0,1],
+                            "emissive"=> [0,0,0,0]
+            }
+            @model={@fingername=>{"Links"=>{}}}
+            def loadYamlAndChange()
+                file = YAML.load_file("config.yml")
+                #print file 
+             
+                    
+                #print finger
+                links = file[ @fingername]["Links"]
+                links.each do |linkName,link|
+    
+                    color = link["color"]
+                    mass  = link["mass"] 
+                    joint = link["joint"]
+    
+                    if linkName == "knuckle_"+fingername
+                        #visual
+                        @knuckle["ambient"] = color["ambient"]
+                        @knuckle["diffuse"] = color["diffuse"]
+                        @knuckle["specular"] = color["specular"]
+                        @knuckle["emissive"] = color["emissive"]
+                        #physical prop
+                        @knuckle["mass"] = mass
+                        @knuckle["j_damping"] = joint["damping"]
+                        @knuckle["j_friction"] = joint["friction"]
+                    elsif linkName== "proximal_"+fingername
+                        #visual
+                        @proximal["ambient"] = color["ambient"]
+                        @proximal["diffuse"] = color["diffuse"]
+                        @proximal["specular"] = color["specular"]
+                        @proximal["emissive"] = color["emissive"]
+                        #physical prop
+                        @proximal["mass"] = mass
+                        @proximal["j_damping"] = joint["damping"]
+                        @proximal["j_friction"] = joint["friction"]
+                    elsif linkName== "middle_"+fingername
+                        #visual
+                        @middle["ambient"] = color["ambient"]
+                        @middle["diffuse"] = color["diffuse"]
+                        @middle["specular"] = color["specular"]
+                        @middle["emissive"] = color["emissive"]
+                        #physical prop
+                        @middle["mass"] = mass
+                        @middle["j_damping"] = joint["damping"]
+                        @middle["j_friction"] = joint["friction"]
+                    elsif linkName== "distal_"+fingername
+                        #visual
+                        @distal["ambient"] = color["ambient"]
+                        @distal["diffuse"] = color["diffuse"]
+                        @distal["specular"] = color["specular"]
+                        @distal["emissive"] = color["emissive"]
+                        #physical prop
+                        @distal["mass"] = mass
+                        @distal["j_damping"] = joint["damping"]
+                        @distal["j_friction"] = joint["friction"]
+                    end
+                end
+                  
+                
+            end
+            def generate_model_forReset()
+                link_list = [ @knuckle,@proximal,@middle,@distal]
+                i=0
+                loop do
+              
+                    @model[@fingername]["Links"][link_list[i]["link_name"]]={ 
+            
+                            "mass"      =>link_list[i]["mass"],
+    
+                            "color"     =>{
+                                'ambient'  => link_list[i]["ambient"] ,                                              
+                                'specular' => link_list[i]["specular"],
+                                'emissive' => link_list[i]["emissive"],
+                                'diffuse' => link_list[i]["diffuse"] 
+                            },
+                            "joint"     =>{
+    
+                                "damping"     =>link_list[i]["j_damping"],
+                                "friction"      =>link_list[i]["j_friction"]
+    
+                            }
+                        }
+                    if i == link_list.length-1
+                     break
+                    end
+                    i +=1
+              
+               end
+            
+            end
+            def generate_model()
+                link_list = [ @knuckle,@proximal,@middle,@distal]
+                i= 0
+             
+                loop do
+                
+                    @model[@fingername]["Links"][link_list[i]["link_name"]]={ 
+                                                                "link_name"  =>link_list[i]["link_name"],
+                                                                "pose"      => link_list[i]["pose"],
+                                                                "mass"      =>link_list[i]["mass"],
+                                                                "inertial"  => {
+                                                                    "pose_i" =>link_list[i]["pose_i"],
+                                                                    "ixx"    =>link_list[i]["ixx"],
+                                                                    "ixy"    =>link_list[i]["ixy"],
+                                                                    "ixz"    =>link_list[i]["ixz"],
+                                                                    "iyy"    =>link_list[i]["iyy"],
+                                                                    "iyz"    =>link_list[i]["iyz"],
+                                                                    "izz"    =>link_list[i]["izz"],
+    
+                                                                },
+                                                                "joint"     =>{
+                                                                    "p_name"        =>link_list[i]["p_name"],
+                                                                    "j_name"        =>link_list[i]["j_name"],
+                                                                    "j_type"        =>link_list[i]["j_type"],
+                                                                    "j_axis"        =>link_list[i]["j_axis"],
+                                                                    "j_limit"       =>link_list[i]["j_limit"],
+                                                                    "j_effort"      =>link_list[i]["j_effort"],
+                                                                    "j_velocity"    =>link_list[i]["j_velocity"],
+                                                                    "j_damping"     =>link_list[i]["j_damping"],
+                                                                    "friction"      =>link_list[i]["friction"]
+    
+                                                                }
+                    }
+                    if i ==link_list.length-1
+                     break
+                    end
+                    i +=1
+                   
+                end
+               #print @model
+            end
+            if load_setting == true
+                loadYamlAndChange()
+                generate_model()
+            else
+                generate_model_forReset()
+            end
+            path_c = {  "distal"   => "meshes/F1.dae",
+                        "middle"   => "meshes/F2_c.dae",
+                        "proximal" => "meshes/F3_c.dae",
+                        "knuckle"  => "meshes/knuckle.dae",
+            }
+            path_v = {  "distal"   => "meshes/F1.dae",
+                        "middle"   => "meshes/F2.dae",
+                        "proximal" => "meshes/F3.dae",
+                        "knuckle"  => "meshes/knuckle.dae"
+            }
+            @mesh_c={}
+            @mesh_v={}
+            if sim_env == "gazebo"
+              #model://+default path
+              path_c.each do |key,value|
+                @mesh_c.merge!({key => "model://kuka_handlit/"+value})
+              end
+              path_v.each do |key,value|
+                @mesh_v.merge!({key => "model://kuka_handlit/"+value})
+              end
+    
+            elsif sim_env == "pybullet"
+              #deafult path
+              @mesh_v = path_v
+              @mesh_c = path_c
+            else
+              puts "well life sucks!not everything is supported.A'nt life a bitch? "
+            end
+                
+        end
+    end
+    class Thumb
+        attr_accessor :thbase,:thproximal,:thhub,:thmiddle,:thdistal,:palm,:mesh_c,:mesh_v,:model
+        #constants
+        M_PI = 3.1415926535897931
+        def initialize(sim_env,load_setting,palm)
+            @palm = palm
+            @thbase =  {# link
+                        'link_name'=>"thbase",
+                        'pose'=> [-0.034+palm['pose'][0],
+                        0.012129+palm['pose'][1],
+                        0.027679+palm['pose'][2],
+                        0.870557,0.572429,-2.5703],
+                        # inetia 
+                        'pose_i'=> [0,0,0,
+                                    0,0,0],                   
+                        'mass'=> 0.010,
+                        'ixx'=> 0.00000016 ,'ixy'=> 0     ,'ixz'=> 0 ,
+                        'iyy'=> 0.00000016 ,'iyz'=> 0     ,'izz'=>0.00000016 ,
+                        # joint 
+                        "p_name"       =>"palm",
+                        "j_name"     =>"THJ5",
+                        "j_type"     =>"revolute",
+                        "j_axis"     => [0, 0, 0.541675],
+                        "j_limit"    => [-1.0472,1.0472], #[lower,upper]
+                        "j_effort"   => 5.0,
+                        "j_velocity" => 4.0,
+                        "j_damping"  => 0.2,
+                        "j_friction" => 0,
+                        #visual
+                        "ambient"=>  [0,0,0,1],
+                        "diffuse"=>  [0,0,0,1],
+                        "specular"=> [0,0,0,1],
+                        "emissive"=> [0,0,0,0]
+                            
+        
+            } 
+            @thproximal ={# link
+                        'link_name'=>"thproximal",
+                        'pose'=> [0+thbase['pose'][0],
+                                0+thbase['pose'][1],
+                                0+thbase['pose'][2],
+                                0+thbase['pose'][3],
+                                0+thbase['pose'][4],
+                                0+thbase['pose'][5]],
+                        # inetia 
+                        'pose_i'=> [0,0,0.021111,
+                                    0,0,0],                   
+                        'mass'=> 0.040,
+                        'ixx'=> 0.0000136 ,'ixy'=> 0     ,'ixz'=> 0 ,
+                        'iyy'=> 0.0000136 ,'iyz'=> 0     ,'izz'=>0.00000313,
+                        # joint 
+                        "p_name"     =>"thbase",
+                        "j_name"     =>"THJ4",
+                        "j_type"     =>"revolute",
+                        "j_axis"     => [-0.707107, -0.454519, -0.541675],
+                        "j_limit"    => [0,1.22173], #[lower,upper]
+                        "j_effort"   => 3.0,
+                        "j_velocity" => 4.0,
+                        "j_damping"  => 0.2,
+                        "j_friction" => 0,
+                        #visual
+                        "ambient"=>  [0,0,0,1],
+                        "diffuse"=>  [0,0,0,1],
+                        "specular"=> [0,0,0,1],
+                        "emissive"=> [0,0,0,0]                    
+            } 
+            @thhub = {  # link
+                        'link_name' =>"thhub",
+                        'pose'=> [-0.02687+thproximal['pose'][0],
+                                    0.017272+thproximal['pose'][1],
+                                    0.038-0.017416+thproximal['pose'][2],
+                                0+thproximal['pose'][3],
+                                0+thproximal['pose'][4],
+                                0+thproximal['pose'][5]],
+                        # inetia 
+                        'pose_i'=> [0,0,0,
+                                    0,0,0],                   
+                        'mass'=> 0.005,
+                        'ixx'=> 0.000001 ,'ixy'=> 0     ,'ixz'=> 0 ,
+                        'iyy'=> 0.000001 ,'iyz'=> 0     ,'izz'=>0.0000003 ,
+                        # joint 
+                        "p_name"     =>"thproximal",
+                        "j_name"     =>"THJ3",
+                        "j_type"     =>"fixed",
+                        "j_axis"     => [1,0,0]
+                    }
+            @thmiddle = {# link
+                        'link_name' =>"thmiddle",
+                        'pose'=> [0+thhub['pose'][0],
+                                0+thhub['pose'][1],
+                               0+thhub['pose'][2],
+                                0+thhub['pose'][3],
+                                0+thhub['pose'][4],
+                                0+thhub['pose'][5]],
+                        # inetia 
+                        'pose_i'=> [0,0,0.16,
+                                    0,0,0],                   
+                        'mass'=> 0.020,
+                        'ixx'=> 0.0000051 ,'ixy'=> 0     ,'ixz'=> 0 ,
+                        'iyy'=> 0.0000051 ,'iyz'=> 0     ,'izz'=>0.00000121 ,
+                        # joint 
+                        "p_name"     =>"thhub",
+                        "j_name"     =>"THJ2",
+                        "j_type"     =>"revolute",
+                        "j_axis"     => [0,-0.766044,0.642788],
+                        "j_limit"    => [-0.698132,0.698132], #[lower,upper]
+                        "j_effort"   => 2.0,
+                        "j_velocity" => 2.0,
+                        "j_damping"  => 0.1,
+                        "j_friction" => 0,
+                        #visual
+                        "ambient"=>  [0,0,0,1],
+                        "diffuse"=>  [0,0,0,1],
+                        "specular"=> [0,0,0,1],
+                        "emissive"=> [0,0,0,0]
+            } 
+            @thdistal = {# link
+                       'link_name' =>"thdistal",
+                       'pose'=> [-0.022628+thmiddle['pose'][0],
+                               0.014545+thmiddle['pose'][1],
+                               0.017333+thmiddle['pose'][2],
+                               -1.655955+thmiddle['pose'][3],
+                               0.125703+thmiddle['pose'][4],
+                               4.1411+thmiddle['pose'][5]],
+                       # inetia 
+                       'pose_i'=> [0,0,0.014559,
+                                   0,0,0],                   
+                       'mass'=> 0.016,
+                       'ixx'=> 0.0000021 ,'ixy'=> 0     ,'ixz'=> 0 ,
+                       'iyy'=> 0.0000022 ,'iyz'=> 0     ,'izz'=>0.000001 ,
+                        # joint 
+                        "p_name"     =>"thmiddle",
+                        "j_name"     =>"THJ1",
+                        "j_type"     =>"revolute",
+                        "j_axis"     => [-0,-0.766044,0.642788],
+                        "j_limit"    => [0,1.5708], #[lower,upper]
+                        "j_effort"   => 1.0,
+                        "j_velocity" => 4.0,
+                        "j_damping"  => 0.2,
+                        "j_friction" => 0,
+                        #visual
+                        "ambient"=>  [0,0,0,1],
+                        "diffuse"=>  [0,0,0,1],
+                        "specular"=> [0,0,0,1],
+                        "emissive"=> [0,0,0,0]
+            }
+            @model={"TH"=>{"Links"=>{}}}
+            def loadYamlAndChange()
+                file = YAML.load_file("config.yml")
+                #print file 
+             
+                    
+                #print finger
+                links = file["TH"]["Links"]
+                links.each do |linkName,link|
+    
+                    color = link["color"]
+                    mass  = link["mass"] 
+                    joint = link["joint"]
+    
+                    if linkName == "thbase"
+                        #visual
+                        @thbase["ambient"] = color["ambient"]
+                        @thbase["diffuse"] = color["diffuse"]
+                        @thbase["specular"] = color["specular"]
+                        @thbase["emissive"] = color["emissive"]
+                        #physical prop
+                        @thbase["mass"] = mass
+                        @thbase["j_damping"] = joint["damping"]
+                        @thbase["j_friction"] = joint["friction"]
+                    elsif linkName== "thproximal"
+                        #visual
+                        @thproximal["ambient"] = color["ambient"]
+                        @thproximal["diffuse"] = color["diffuse"]
+                        @thproximal["specular"] = color["specular"]
+                        @thproximal["emissive"] = color["emissive"]
+                        #physical prop
+                        @thproximal["mass"] = mass
+                        @thproximal["j_damping"] = joint["damping"]
+                        @thproximal["j_friction"] = joint["friction"]
+                    elsif linkName== "thhub"
+                        #physical prop
+                        @thhub["mass"] = mass
+                        @thhub["j_damping"] = joint["damping"]
+                        @thhub["j_friction"] = joint["friction"]
+                    elsif linkName== "thmiddle"
+                        #visual
+                        @thmiddle["ambient"] = color["ambient"]
+                        @thmiddle["diffuse"] = color["diffuse"]
+                        @thmiddle["specular"] = color["specular"]
+                        @thmiddle["emissive"] = color["emissive"]
+                        #physical prop
+                        @thmiddle["mass"] = mass
+                        @thmiddle["j_damping"] = joint["damping"]
+                        @thmiddle["j_friction"] = joint["friction"]
+                    elsif linkName== "thdistal"
+                        #visual
+                        @thdistal["ambient"] = color["ambient"]
+                        @thdistal["diffuse"] = color["diffuse"]
+                        @thdistal["specular"] = color["specular"]
+                        @thdistal["emissive"] = color["emissive"]
+                        #physical prop
+                        @thdistal["mass"] = mass
+                        @thdistal["j_damping"] = joint["damping"]
+                        @thdistal["j_friction"] = joint["friction"]
+                    end
+                end
+                  
+                
+            end
+            def generate_model()
+                link_list = [@thbase,@thproximal,@thhub,@thmiddle,@thdistal]
+                i= 0
+             
+                loop do
+                
+                    @model["TH"]["Links"][link_list[i]["link_name"]]={ 
+                                                                "link_name"  =>link_list[i]["link_name"],
+                                                                "pose"      => link_list[i]["pose"],
+                                                                "mass"      =>link_list[i]["mass"],
+                                                                "inertial"  => {
+                                                                    "pose_i" =>link_list[i]["pose_i"],
+                                                                    "ixx"    =>link_list[i]["ixx"],
+                                                                    "ixy"    =>link_list[i]["ixy"],
+                                                                    "ixz"    =>link_list[i]["ixz"],
+                                                                    "iyy"    =>link_list[i]["iyy"],
+                                                                    "iyz"    =>link_list[i]["iyz"],
+                                                                    "izz"    =>link_list[i]["izz"],
+    
+                                                                },
+    
+                                                                "joint"     =>{
+                                                                    "p_name"        =>link_list[i]["p_name"],
+                                                                    "j_name"        =>link_list[i]["j_name"],
+                                                                    "j_type"        =>link_list[i]["j_type"],
+                                                                    "j_axis"        =>link_list[i]["j_axis"],
+                                                                    "j_limit"       =>link_list[i]["j_limit"],
+                                                                    "j_effort"      =>link_list[i]["j_effort"],
+                                                                    "j_velocity"    =>link_list[i]["j_velocity"],
+                                                                    "j_damping"     =>link_list[i]["j_damping"],
+                                                                    "friction"      =>link_list[i]["friction"]
+    
+                                                                }
+                    }
+                    if i ==link_list.length-1
+                     break
+                    end
+                    i +=1
+                   
+                end
+               #print @model
+            end
+            def generate_model_forReset()
+                link_list = [@thbase,@thproximal,@thhub,@thmiddle,@thdistal]
+                i=0
+                loop do
+              
+                    @model["TH"]["Links"][link_list[i]["link_name"]]={ 
+            
+                        "mass"      =>link_list[i]["mass"],
+                        "color"     =>{
+                                            'ambient'  => link_list[i]["ambient"] ,                                             
+                                            'specular' => link_list[i]["specular"],
+                                            'emissive' => link_list[i]["emissive"],
+                                            'diffuse' => link_list[i]["diffuse"] 
+                        },
+                        "joint"     =>{
+                                            "damping"     =>link_list[i]["j_damping"],
+                                            "friction"    =>link_list[i]["j_friction"]
+                        }
+                        }
+                    if i ==link_list.length-1
+                     break
+                    end
+                    i +=1
+               end
+             
+            end
+            if load_setting == true
+                loadYamlAndChange()
+                generate_model()
+            else
+                generate_model_forReset()
+            end
+            path_v = {
+                    'thproximal' => "meshes/TH3_z.dae",
+                    'thmiddle'   => "meshes/TH2_z.dae",
+                    'thdistal'   => "meshes/TH1_z.dae"
+            }
+            path_c = {
+                    'thproximal' => "meshes/TH3_z_c.dae",
+                    'thmiddle'   => "meshes/TH2_z_c.dae",
+                    'thdistal'   => "meshes/TH1_z.dae"
+            }
+            @mesh_c ={}
+            @mesh_v ={}
+            
+            if sim_env == "gazebo"
+              #model://+default path
+              path_c.each do |key,value|
+                @mesh_c.merge!({key => "model://kuka_handlit/"+value})
+              end
+              path_v.each do |key,value|
+                @mesh_v.merge!({key => "model://kuka_handlit/"+value})
+              end
+      
+            elsif sim_env == "pybullet"
+              #deafult path
+              @mesh_v = path_v
+              @mesh_c = path_c
+            else
+              puts "well life sucks!not everything is supported.A'nt life a bitch? "
+            end
+    
+    
+                
+        end
+    end
+             
+    #sim env setting
+    sim_env ="pybullet" #change to pybullet|gazebo 
+    load_setting = true
+    kuka = Kuka.new(sim_env,load_setting)
+    l_kuka =  [kuka.lbr_iiwa_link_0,kuka.lbr_iiwa_link_1,kuka.lbr_iiwa_link_2,kuka.lbr_iiwa_link_3,
+              kuka.lbr_iiwa_link_4,kuka.lbr_iiwa_link_5,kuka.lbr_iiwa_link_6,kuka.lbr_iiwa_link_7]
+    j_kuka = [kuka.lbr_iiwa_link_1,kuka.lbr_iiwa_link_2,kuka.lbr_iiwa_link_3,
+              kuka.lbr_iiwa_link_4,kuka.lbr_iiwa_link_5,kuka.lbr_iiwa_link_6,
+              kuka.lbr_iiwa_link_7]
+    #####################################hand setting######################
+    
+    #hand general variables
+    #constants
+    M_PI = 3.1415926535897931
+    base = Base.new(sim_env,load_setting,kuka.lbr_iiwa_link_7)
+    #finger
+    # This value move the finger object in x y z         
+    biase = [0,0,0]
+    ff = Finger.new(sim_env,load_setting,base.palm,biase,"FF")
+    biase = [0.022,0.002536,0.003068]
+    mf =  Finger.new(sim_env,load_setting,base.palm,biase,"MF")
+    biase = [0.044,0,0]
+    rf  = Finger.new(sim_env,load_setting,base.palm,biase,"RF")
+    fingers =[ff,mf,rf]
+    #finger joints
+    #knucle is exclided and defined on its own
+    j_finger_L = ["proximal","middle","distal"]#axis tag for all the fingers are all the same. so gonna take one of them for all
+    
+    #thumb
+    thumb = Thumb.new(sim_env,load_setting,base.palm)
+    #thumb joints
+    #thhub is not included becuase it has a fixed joint
+    j_thumb_L = [thumb.thbase,thumb.thproximal,thumb.thmiddle,thumb.thdistal]
+    
+    #saving the model
+    def save_model(kuka,base,ff,mf,rf,thumb)
+        robot_model = {"Robots"=>{
+                            "Hand"=>{
+                                "BASE"=>base.model["BASE"],
+                                "FF"=>ff.model["FF"],
+                                "MF"=>mf.model["MF"],
+                                "RF"=>rf.model["RF"],
+                                "TH"=>thumb.model["TH"]
+                                 },
+                            "KUKA" =>kuka.model["KUKA"]
+                            
+                            
+                    }
+        }
+        File.open("model_info.yml", "w") do |out|
+            YAML.dump( robot_model, out )
+             #{ |file| file.write(robot_model.to_yaml) }
+        end
+    end
+
+    save_model(kuka,base,ff,mf,rf,thumb)
+    #resetting the setting in config yml
+    def rest_modelConfigYML(kuka,base,ff,mf,rf,thumb)
+        robot_model = {
+                        "Kuka" =>kuka.model["KUKA"]["Body"],
+                        "BASE"=>base.model["BASE"],
+                        "FF"=>ff.model["FF"],
+                        "MF"=>mf.model["MF"],
+                        "RF"=>rf.model["RF"],
+                        "TH"=>thumb.model["TH"],
+                      
+        }
+        File.open("config.yml", "w") do |out|
+            YAML.dump( robot_model, out )
+          
+        end
+    end
+    if load_setting == false
+        rest_modelConfigYML(kuka,base,ff,mf,rf,thumb)
+    end
+      
+    %>
+
+<sdf version='1.6'>
+  <model name="kuka_handlit">
+    <!--KUKA-->
+    <link name = "world">
+        <pose frame=''>0 0 0 0 0 0</pose>
+        <inertial>
+            <pose frame=''>0 0 0.0 0 0 0</pose>
+            <mass>0.0</mass>
+            <inertia>
+                <ixx>0.</ixx>
+                <ixy>0</ixy>
+                <ixz>0</ixz>
+                <iyy>0.</iyy>
+                <iyz>0</iyz>
+                <izz>0.</izz>
+            </inertia>
+        </inertial>
+    </link>
+    <joint name="<%=kuka.lbr_iiwa_link_0['j_name']%>" type="<%=kuka.lbr_iiwa_link_0['j_type']%>">
+        <child><%=kuka.lbr_iiwa_link_0['link_name']%></child>
+        <parent><%=kuka.lbr_iiwa_link_0['p_name']%></parent>
+    </joint>
+    <%l_kuka.each do |l|%>
+      <link name="<%=l['link_name']%>">
+        <pose frame=''><%=a_to_s(l['pose'])%></pose>
+        <inertial>
+            <pose frame=''><%=a_to_s(l['pose_i'])%></pose>
+            <mass><%=l['mass']%></mass>
+            <inertia>
+                <ixx><%=l['ixx']%></ixx>
+                <ixy><%=l['ixy']%></ixy>
+                <ixz><%=l['ixz']%></ixz>
+                <iyy><%=l['iyy']%></iyy>
+                <iyz><%=l['iyz']%></iyz>
+                <izz><%=l['izz']%></izz>
+            </inertia>
+        </inertial>
+        <collision name='<%=l['link_name']%>_collision'>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              
+              <scale><%=a_to_s(l['scale'])%></scale>
+              <uri><%=kuka.mesh_c[l['link_name']]%></uri>
+              
+            </mesh>
+          </geometry>
+        </collision>
+        <visual name='<%=l['link_name']%>_visual'>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale><%=a_to_s(l['scale'])%></scale>
+              <uri><%=kuka.mesh_v[l['link_name']]%></uri>
+            </mesh>
+          </geometry>
+          <material>
+            <ambient><%=a_to_s(l['ambient'])%></ambient>
+            <diffuse><%=a_to_s(l['diffuse'])%></diffuse>
+            <specular><%=a_to_s(l['specular'])%></specular>
+            <emissive><%=a_to_s(l['emissive'])%></emissive>
+          </material>
+        </visual>
+      </link>
+    <%end%>
+   
+    <%j_kuka.each do |j|%>
+      <joint name="<%=j['j_name']%>" type="<%=j['j_type']%>">
+        <child><%=j['link_name']%></child>
+        <parent><%=j['p_name']%></parent>
+        <axis>
+          <xyz><%=a_to_s(j['j_axis'])%></xyz>
+          <limit>
+            <lower><%=j['j_limit'][0]%></lower>
+            <upper><%=j['j_limit'][1]%></upper>
+            <effort><%=j['j_effort']%></effort>
+            <velocity><%=j['j_velocity']%></velocity>
+          </limit>
+          <dynamics>
+            <damping><%=j['j_damping']%></damping>
+            <friction><%=j['friction']%></friction>
+            <spring_reference><%=j['spring_reference']%></spring_reference>
+            <spring_stiffness><%=j['spring_stiffness']%></spring_stiffness>
+          </dynamics>
+        </axis>
+      </joint>
+    <%end%>
+
+    <!--Hand-->
+
+    <joint name="<%=base.forearm['j_name']%>" type="<%=base.forearm['j_type']%>">
+        <child><%=base.forearm['link_name']%></child>
+        <parent><%=base.forearm['p_name']%></parent>
+    </joint>
+
+    <link name ="<%=base.forearm['link_name']%>" >
+        <pose frame=''><%=a_to_s(base.forearm['pose'])%></pose>
+        <inertial>
+            <pose frame=''><%=a_to_s(base.forearm['pose_i'])%></pose>
+            <mass><%=base.forearm['mass']%></mass>
+            <inertia>
+                <ixx><%=base.forearm['ixx']%></ixx>
+                <ixy><%=base.forearm['ixy']%></ixy>
+                <ixz><%=base.forearm['ixz']%></ixz>
+                <iyy><%=base.forearm['iyy']%></iyy>
+                <iyz><%=base.forearm['iyz']%></iyz>
+                <izz><%=base.forearm['izz']%></izz>
+            </inertia>
+        </inertial>
+
+        <visual name='visual_forearm_link'>
+
+            <geometry>
+                <mesh>
+                    <scale>1 1 1</scale>
+                    <uri><%=base.mesh_v["forearm"]%></uri>
+                </mesh>
+            </geometry>
+            <material>
+                <ambient><%=a_to_s(base.forearm['ambient'])%></ambient>
+                <diffuse><%=a_to_s(base.forearm['diffuse'])%></diffuse>
+                <specular><%=a_to_s(base.forearm['specular'])%></specular>
+                <emissive><%=a_to_s(base.forearm['emissive'])%></emissive>
+            </material>
+        </visual>
+        <collision name='collision_forearm_link'>
+        
+            <geometry>
+                <mesh>
+                    <scale>1 1 1</scale>
+                    <uri><%=base.mesh_c["forearm"]%></uri>
+                </mesh>
+            </geometry>
+        </collision>
+    </link>
+
+    <link name = "<%=base.palm['link_name']%>">
+        <pose frame=''><%=a_to_s(base.palm['pose'])%></pose>
+        <inertial>
+            <pose frame=''><%=a_to_s(base.palm['pose_i'])%></pose>
+            <mass><%=base.palm['mass']%></mass>
+            <inertia>
+                <ixx><%=base.palm['ixx']%></ixx>
+                <ixy><%=base.palm['ixy']%></ixy>
+                <ixz><%=base.palm['ixz']%></ixz>
+                <iyy><%=base.palm['iyy']%></iyy>
+                <iyz><%=base.palm['iyz']%></iyz>
+                <izz><%=base.palm['izz']%></izz>
+            </inertia>
+        </inertial>
+        
+        <visual name='visual_palm_link'>
+
+            <geometry>
+                <mesh>
+                    <scale>-0.001 0.001 0.001</scale>
+                    <uri><%= base.mesh_v["palm"] %></uri>
+                </mesh>
+            </geometry>
+            <material>
+                <ambient><%=a_to_s(base.palm['ambient'])%></ambient>
+                <diffuse><%=a_to_s(base.palm['diffuse'])%></diffuse>
+                <specular><%=a_to_s(base.palm['specular'])%></specular>
+                <emissive><%=a_to_s(base.palm['emissive'])%></emissive>
+            </material>
+        </visual>
+        <collision name="collision_palm_link">
+
+            <geometry>
+                <mesh>
+                    <scale>-0.001 0.001 0.001</scale>
+                <uri><%= base.mesh_c["palm"] %></uri>
+            </mesh>
+            </geometry>
+        </collision>
+
+
+        
+    </link>
+    <joint name="<%=base.palm['j_name']%>" type="<%=base.palm['j_type']%>">
+        <child><%=base.palm['link_name']%></child>
+        <parent><%=base.palm['p_name']%></parent>
+        <axis>
+
+            <xyz>0 -1 0</xyz>
+         </axis>
+    </joint>  
+
+    
+    <link name = "<%=base.palm_fake['link_name']%>">
+
+    <pose frame=''><%=a_to_s(base.palm_fake['pose'])%></pose>
+    <inertial>
+        <pose frame=''><%=a_to_s(base.palm_fake['pose_i'])%></pose>
+        <mass><%=base.palm_fake['mass']%></mass>
+        <inertia>
+            <ixx><%=base.palm_fake['ixx']%></ixx>
+            <ixy><%=base.palm_fake['ixy']%></ixy>
+            <ixz><%=base.palm_fake['ixz']%></ixz>
+            <iyy><%=base.palm_fake['iyy']%></iyy>
+            <iyz><%=base.palm_fake['iyz']%></iyz>
+            <izz><%=base.palm_fake['izz']%></izz>
+        </inertia>
+    </inertial>
+        <visual name='visual_palm_fake'>
+            <geometry>
+                <sphere>
+                <radius>0.01</radius>
+                </sphere>
+            </geometry>
+            <material>
+                <ambient>0.5672216218105076 0.531815859282997 0.5801439037594547 1</ambient>
+                <diffuse>0.5464167892541046 0.6932951350253517 0.22253023363722557 1</diffuse>
+                <specular>0.9022550019258972 0.9029306286118689 0.5969458319897258 1</specular>
+                <emissive>0 0 0 0</emissive>
+            </material>
+        </visual>
+    </link>
+
+    <joint name="<%=base.palm_fake['j_name']%>" type="<%=base.palm_fake['j_type']%>">
+        <child><%=base.palm_fake['link_name']%></child>
+        <parent><%=base.palm_fake['p_name']%></parent>
+        <axis>
+
+            <xyz>0 -1 0</xyz>
+         </axis>
+    </joint>  
+
+    <%fingers.each do |finger|%>
+
+        <link name = "<%=finger.knuckle['link_name']%>">
+
+            <pose frame=''><%=a_to_s(finger.knuckle['pose'])%></pose>
+            <inertial>
+                <pose frame=''><%=a_to_s(finger.knuckle['pose_i'])%></pose>
+                <mass><%=finger.knuckle['mass']%></mass>
+                <inertia>
+                    <ixx><%=finger.knuckle['ixx']%></ixx>
+                    <ixy><%=finger.knuckle['ixy']%></ixy>
+                    <ixz><%=finger.knuckle['ixz']%></ixz>
+                    <iyy><%=finger.knuckle['iyy']%></iyy>
+                    <iyz><%=finger.knuckle['iyz']%></iyz>
+                    <izz><%=finger.knuckle['izz']%></izz>
+                </inertia>
+            </inertial>
+
+            <visual name='visual_knuckle_link_<%=finger.fingername%>'>
+
+                <geometry>
+                    <mesh>
+                        <scale>0.001 0.001 0.001</scale>
+                        <uri><%= ff.mesh_v['knuckle'] %></uri>
+                    </mesh>
+                </geometry>
+                <material>
+                    <ambient><%=a_to_s(finger.knuckle['ambient'])%></ambient>
+                    <diffuse><%=a_to_s(finger.knuckle['diffuse'])%></diffuse>
+                    <specular><%=a_to_s(finger.knuckle['specular'])%></specular>
+                    <emissive><%=a_to_s(finger.knuckle['emissive'])%></emissive>
+                </material>
+            </visual>
+            <collision name='collision_knuckle_link_<%=finger.fingername%>'>
+                <geometry>
+                <mesh>
+                    <scale>0.001 0.001 0.001</scale>
+                    <uri><%= ff.mesh_c['knuckle'] %></uri>
+                </mesh>
+            </geometry>
+            </collision>
+        </link>
+        <link name = "<%=finger.proximal['link_name']%>">
+            <pose frame=''><%=a_to_s(finger.proximal['pose'])%></pose>
+            <inertial>
+                <pose frame=''><%=a_to_s(finger.proximal['pose_i'])%></pose>
+                <mass><%=finger.proximal['mass']%></mass>
+                <inertia>
+                    <ixx><%=finger.proximal['ixx']%></ixx>
+                    <ixy><%=finger.proximal['ixy']%></ixy>
+                    <ixz><%=finger.proximal['ixz']%></ixz>
+                    <iyy><%=finger.proximal['iyy']%></iyy>
+                    <iyz><%=finger.proximal['iyz']%></iyz>
+                    <izz><%=finger.proximal['izz']%></izz>
+                </inertia>
+            </inertial>
+
+            <visual name='visual_proximal_link_<%=finger.fingername%>'>
+
+                <geometry>
+                    <mesh>
+                        <scale>0.001 0.001 0.001</scale>
+                        <uri><%= ff.mesh_v['proximal'] %></uri>
+                    </mesh>
+                </geometry>
+                <material>
+                    <ambient><%=a_to_s(finger.proximal['ambient'])%></ambient>
+                    <diffuse><%=a_to_s(finger.proximal['diffuse'])%></diffuse>
+                    <specular><%=a_to_s(finger.proximal['specular'])%></specular>
+                    <emissive><%=a_to_s(finger.proximal['emissive'])%></emissive>
+                </material>
+            </visual>
+            <collision name='collision_proximal_link_<%=finger.fingername%>'>
+                <geometry>
+                <mesh>
+                    <scale>0.001 0.001 0.001</scale>
+                    <uri><%= ff.mesh_c['proximal'] %></uri>
+                </mesh>
+            </geometry>
+            </collision>
+        </link>
+        <link name = "<%=finger.middle['link_name']%>">
+            <pose frame=''><%=a_to_s(finger.middle['pose'])%></pose>
+            <inertial>
+                <pose frame=''><%=a_to_s(finger.middle['pose_i'])%></pose>
+                <mass><%=finger.middle['mass']%></mass>
+                <inertia>
+                    <ixx><%=finger.middle['ixx']%></ixx>
+                    <ixy><%=finger.middle['ixy']%></ixy>
+                    <ixz><%=finger.middle['ixz']%></ixz>
+                    <iyy><%=finger.middle['iyy']%></iyy>
+                    <iyz><%=finger.middle['iyz']%></iyz>
+                    <izz><%=finger.middle['izz']%></izz>
+                </inertia>
+            </inertial>
+
+            <visual name='visual_middle_link_<%=finger.fingername%>'>
+
+                <geometry>
+                    <mesh>
+                        <scale>0.001 0.001 0.001</scale>
+                        <uri><%= ff.mesh_v['middle'] %></uri>
+                    </mesh>
+                </geometry>
+                <material>
+                    <ambient><%=a_to_s(finger.middle['ambient'])%></ambient>
+                    <diffuse><%=a_to_s(finger.middle['diffuse'])%></diffuse>
+                    <specular><%=a_to_s(finger.middle['specular'])%></specular>
+                    <emissive><%=a_to_s(finger.middle['emissive'])%></emissive>
+                </material>
+            </visual>
+            <collision name='collision_middle_link_<%=finger.fingername%>'>
+                <geometry>
+                    <mesh>
+                        <scale>0.001 0.001 0.001</scale>
+                        <uri><%= ff.mesh_c['middle'] %></uri>
+                    </mesh>
+                </geometry>
+            </collision>
+        </link>
+        <link name =  "<%=finger.distal['link_name']%>">
+            <pose frame=''><%=a_to_s(finger.distal['pose'])%></pose>
+            <inertial>
+                <pose frame=''><%=a_to_s(finger.distal['pose_i'])%></pose>
+                <mass><%=finger.distal['mass']%></mass>
+                <inertia>
+                    <ixx><%=finger.distal['ixx']%></ixx>
+                    <ixy><%=finger.distal['ixy']%></ixy>
+                    <ixz><%=finger.distal['ixz']%></ixz>
+                    <iyy><%=finger.distal['iyy']%></iyy>
+                    <iyz><%=finger.distal['iyz']%></iyz>
+                    <izz><%=finger.distal['izz']%></izz>
+                </inertia>
+            </inertial>
+
+            <visual name='visual_distal_link_<%=finger.fingername%>'>
+
+                <geometry>
+                    <mesh>
+                        <scale>0.001 0.001 0.001</scale>
+                        <uri><%= ff.mesh_v['distal'] %></uri>
+                    </mesh>
+                </geometry>
+                <material>
+                    <ambient><%=a_to_s(finger.distal['ambient'])%></ambient>
+                    <diffuse><%=a_to_s(finger.distal['diffuse'])%></diffuse>
+                    <specular><%=a_to_s(finger.distal['specular'])%></specular>
+                    <emissive><%=a_to_s(finger.distal['emissive'])%></emissive>
+                </material>
+            </visual>
+            <collision name='collision_distal_link_<%=finger.fingername%>'>
+                <geometry>
+                    <mesh>
+                        <scale>0.001 0.001 0.001</scale>
+                        <uri><%= ff.mesh_c['distal'] %></uri>
+                    </mesh>
+                </geometry>
+            </collision>
+        </link>
+
+        <%j_finger_L.each do |f_L|%>
+            <%
+            if f_L == "proximal"
+                finger_link = finger.proximal
+            elsif f_L =="middle"
+                finger_link = finger.middle
+            elsif f_L =="distal"
+                finger_link = finger.distal
+            end
+
+            %>
+            <joint name="<%=finger_link['j_name']%>" type="<%=finger_link['j_type']%>">
+                <child><%=finger_link['link_name']%></child>
+                <parent><%=finger_link['p_name']%></parent>
+
+                <axis>
+                    <xyz><%=a_to_s(finger_link['j_axis'])%></xyz>
+                    <limit>
+                        <lower><%=finger_link['j_limit'][0]%> </lower>
+                        <upper><%=finger_link['j_limit'][1]%> </upper>
+                        <effort><%=finger_link['j_effort']%> </effort>
+                        <velocity><%=finger_link['j_velocity']%> </velocity>
+                    </limit>
+                    <dynamics>
+                        <damping><%=finger_link['j_damping']%></damping>
+                        <friction><%=finger_link['j_friction']%></friction>
+                        <spring_reference>0</spring_reference>
+                        <spring_stiffness>0</spring_stiffness>
+                    </dynamics>
+                </axis>
+            </joint>
+        <%end%>
+        <joint name='<%=finger.knuckle['j_name']%>' type="<%=finger.knuckle['j_type']%>">
+            <child><%=finger.knuckle['link_name']%></child>
+            <parent><%=finger.knuckle['p_name']%></parent>
+
+            <axis>
+                <xyz><%=a_to_s(finger.knuckle['j_axis'])%></xyz>
+                <limit>
+                    <lower><%=finger.knuckle['j_limit'][0]%> </lower>
+                    <upper><%=finger.knuckle['j_limit'][1]%> </upper>
+                    <effort><%=finger.knuckle['j_effort']%> </effort>
+                    <velocity><%=finger.knuckle['j_velocity']%> </velocity>
+                </limit>
+                <dynamics>
+                    <damping><%=finger.knuckle['j_damping']%></damping>
+                    <friction><%=finger.knuckle['j_friction']%></friction>
+                    <spring_reference>0</spring_reference>
+                    <spring_stiffness>0</spring_stiffness>
+                </dynamics>
+            </axis>
+        </joint>
+
+    <%end%>
+
+
+    <link name = "<%=thumb.thbase['link_name']%>">
+        <pose frame=''><%=a_to_s(thumb.thbase['pose'])%></pose>
+        <inertial>
+            <pose frame=''><%=a_to_s(thumb.thbase['pose_i'])%></pose>
+            <mass><%=thumb.thbase['mass']%></mass>
+            <inertia>
+                <ixx><%=thumb.thbase['ixx']%></ixx>
+                <ixy><%=thumb.thbase['ixy']%></ixy>
+                <ixz><%=thumb.thbase['ixz']%></ixz>
+                <iyy><%=thumb.thbase['iyy']%></iyy>
+                <iyz><%=thumb.thbase['iyz']%></iyz>
+                <izz><%=thumb.thbase['izz']%></izz>
+            </inertia>
+        </inertial>
+        <visual name='visual_thbase_link'>
+            
+            <geometry>
+                <box>
+                    <size>0.001 0.001 0.001</size>
+                </box>
+            </geometry>
+            <material>
+                <ambient><%=a_to_s(thumb.thbase['ambient'])%></ambient>
+                <diffuse><%=a_to_s(thumb.thbase['diffuse'])%></diffuse>
+                <specular><%=a_to_s(thumb.thbase['specular'])%></specular>
+                <emissive><%=a_to_s(thumb.thbase['emissive'])%></emissive>
+            </material>
+        </visual>
+        <collision name='collision_thbase_link'>
+            <pose frame=''>0 0 0 0 0 0</pose>
+            <geometry>
+
+                <sphere>
+                    <radius>0.011</radius>
+                </sphere>
+            
+            </geometry>
+        </collision>
+    </link>
+    <link name = "<%=thumb.thproximal['link_name']%>">
+            
+        <pose frame=''><%=a_to_s(thumb.thproximal['pose'])%></pose>
+        <inertial>
+            <pose frame=''><%=a_to_s(thumb.thproximal['pose_i'])%></pose>
+            <mass><%=thumb.thproximal['mass']%></mass>
+            <inertia>
+                <ixx><%=thumb.thproximal['ixx']%></ixx>
+                <ixy><%=thumb.thproximal['ixy']%></ixy>
+                <ixz><%=thumb.thproximal['ixz']%></ixz>
+                <iyy><%=thumb.thproximal['iyy']%></iyy>
+                <iyz><%=thumb.thproximal['iyz']%></iyz>
+                <izz><%=thumb.thproximal['izz']%></izz>
+            </inertia>
+        </inertial>
+
+        <visual name='visual_thproximal_link'>
+            
+            <geometry>
+                <mesh>
+                    <scale>0.001 0.001 0.001</scale>
+                    <uri><%= thumb.mesh_v['thproximal'] %></uri>
+                </mesh>
+            </geometry>
+            <material>
+                <ambient><%=a_to_s(thumb.thproximal['ambient'])%></ambient>
+                <diffuse><%=a_to_s(thumb.thproximal['diffuse'])%></diffuse>
+                <specular><%=a_to_s(thumb.thproximal['specular'])%></specular>
+                <emissive><%=a_to_s(thumb.thproximal['emissive'])%></emissive>
+            </material>
+        </visual>
+        <collision name='collision_thproximal_link'>
+            <geometry>
+                <mesh>
+                    <scale>0.001 0.001 0.001</scale>
+                    <uri><%= thumb.mesh_c['thproximal'] %></uri>
+                </mesh>
+            </geometry>
+        </collision>
+    </link>
+    <link name = "<%=thumb.thhub['link_name']%>">
+        <pose frame=''><%=a_to_s(thumb.thhub['pose'])%></pose>
+        <inertial>
+            <pose frame=''><%=a_to_s(thumb.thhub['pose_i'])%></pose>
+            <mass><%=thumb.thhub['mass']%></mass>
+            <inertia>
+                <ixx><%=thumb.thhub['ixx']%></ixx>
+                <ixy><%=thumb.thhub['ixy']%></ixy>
+                <ixz><%=thumb.thhub['ixz']%></ixz>
+                <iyy><%=thumb.thhub['iyy']%></iyy>
+                <iyz><%=thumb.thhub['iyz']%></iyz>
+                <izz><%=thumb.thhub['izz']%></izz>
+            </inertia>
+        </inertial>
+        <visual name='visual_thhub_link'>
+            
+            <geometry>
+                <box>
+                    <size>0.001 0.001 0.001</size>
+                </box>
+            </geometry>
+            <material>
+
+            </material>
+        </visual>
+        <collision name='collision_thhub_link'>
+            <geometry>
+                <box>
+                    <size>0.001 0.001 0.001</size>
+                </box>
+            </geometry>
+        </collision>
+    </link>
+    <link name = "<%=thumb.thmiddle['link_name']%>">
+            
+        <pose frame=''><%=a_to_s(thumb.thmiddle['pose'])%></pose>
+        <inertial>
+            <pose frame=''><%=a_to_s(thumb.thmiddle['pose_i'])%></pose>
+            <mass><%=thumb.thmiddle['mass']%></mass>
+            <inertia>
+                <ixx><%=thumb.thmiddle['ixx']%></ixx>
+                <ixy><%=thumb.thmiddle['ixy']%></ixy>
+                <ixz><%=thumb.thmiddle['ixz']%></ixz>
+                <iyy><%=thumb.thmiddle['iyy']%></iyy>
+                <iyz><%=thumb.thmiddle['iyz']%></iyz>
+                <izz><%=thumb.thmiddle['izz']%></izz>
+            </inertia>
+        </inertial>
+
+        <visual name='visual_thmiddle_link'>
+            
+            <geometry>
+                <mesh>
+                    <scale>0.001 0.001 0.001</scale>
+                    <uri><%= thumb.mesh_v['thmiddle'] %></uri>
+                </mesh>
+            </geometry>
+            <material>
+                <ambient><%=a_to_s(thumb.thmiddle['ambient'])%></ambient>
+                <diffuse><%=a_to_s(thumb.thmiddle['diffuse'])%></diffuse>
+                <specular><%=a_to_s(thumb.thmiddle['specular'])%></specular>
+                <emissive><%=a_to_s(thumb.thmiddle['emissive'])%></emissive>
+            </material>
+        </visual>
+
+        <collision name='collision_thmiddle_link'>
+            <geometry>
+                <mesh>
+                    <scale>0.001 0.001 0.001</scale>
+                    <uri><%= thumb.mesh_c['thmiddle'] %></uri>
+                </mesh>
+            </geometry>
+        </collision>
+    </link>
+    <link name = "<%=thumb.thdistal['link_name']%>">
+            
+        <pose frame=''><%=a_to_s(thumb.thdistal['pose'])%></pose>
+        <inertial>
+            <pose frame=''><%=a_to_s(thumb.thdistal['pose_i'])%></pose>
+            <mass><%=thumb.thdistal['mass']%></mass>
+            <inertia>
+                <ixx><%=thumb.thdistal['ixx']%></ixx>
+                <ixy><%=thumb.thdistal['ixy']%></ixy>
+                <ixz><%=thumb.thdistal['ixz']%></ixz>
+                <iyy><%=thumb.thdistal['iyy']%></iyy>
+                <iyz><%=thumb.thdistal['iyz']%></iyz>
+                <izz><%=thumb.thdistal['izz']%></izz>
+            </inertia>
+        </inertial>
+
+        <visual name='visual_thdistal_link'>
+            
+            <geometry>
+                <mesh>
+                    <scale>0.001 0.001 0.001</scale>
+                    <uri><%= thumb.mesh_v['thdistal'] %></uri>
+                </mesh>
+            </geometry>
+            <material>
+                <ambient><%=a_to_s(thumb.thdistal['ambient'])%></ambient>
+                <diffuse><%=a_to_s(thumb.thdistal['diffuse'])%></diffuse>
+                <specular><%=a_to_s(thumb.thdistal['specular'])%></specular>
+                <emissive><%=a_to_s(thumb.thdistal['emissive'])%></emissive>
+            </material>
+        </visual>
+        <collision name='collision_thdistal_link'>
+            <geometry>
+                <mesh>
+                    <scale>0.001 0.001 0.001</scale>
+                    <uri><%= thumb.mesh_c['thdistal']  %></uri>
+                </mesh>
+            </geometry>
+        </collision>
+    </link>
+
+    <%j_thumb_L.each do |th_L|%>
+        <joint name ="<%=th_L['j_name']%>"  type ="<%=th_L['j_type']%>">
+            <child><%=th_L['link_name']%></child>
+            <parent><%=th_L['p_name']%></parent>
+            <axis>
+                <xyz><%=a_to_s(th_L['j_axis'])%></xyz>
+                <limit>
+                    <lower><%=th_L['j_limit'][0]%> </lower>
+                    <upper><%=th_L['j_limit'][1]%> </upper>
+                    <effort><%=th_L['j_effort']%> </effort>
+                    <velocity><%=th_L['j_velocity']%> </velocity>
+                </limit>
+                <dynamics>
+                    <damping><%=th_L['j_damping']%></damping>
+                    <friction><%=th_L['j_friction']%></friction>
+                </dynamics>
+            </axis>
+        </joint>
+    <%end%>
+    <joint name ="<%=thumb.thhub['j_name']%>"  type ="<%=thumb.thhub['j_type']%>">
+        <child><%=thumb.thhub['link_name']%></child>
+        <parent><%=thumb.thhub['p_name']%></parent>
+        <axis>
+            <xyz><%=a_to_s(thumb.thhub['j_axis'])%></xyz>
+        </axis>
+    </joint>
+
+
+
+
+
+
+ 
+   
+  </model>
+
+</sdf>

@@ -1,0 +1,1052 @@
+---
+Robots:
+  Hand:
+    BASE:
+      Links:
+        forearm:
+          link_name: forearm
+          pose:
+          - 0
+          - 0
+          - 1.261
+          - 0
+          - 0
+          - 1.5707963267948966
+          mass: 1.8
+          inertial:
+            pose_i:
+            - 0
+            - 0
+            - 0.09
+            - 0
+            - 0
+            - 0
+            ixx: 0.108
+            ixy: 0
+            ixz: 0
+            iyy: 0.108
+            iyz: 0
+            izz: 0.054
+          joint:
+            p_name: lbr_iiwa_link_7
+            j_name: forearm_world
+            j_type: fixed
+            j_axis: 
+            j_limit: 
+            j_effort: 
+            j_velocity: 
+            j_damping: 
+            friction: 
+        palm:
+          link_name: palm
+          pose:
+          - 0
+          - -0.015
+          - 1.41
+          - -0.6981317007977318
+          - 0
+          - 0
+          mass: 0.3
+          inertial:
+            pose_i:
+            - 0
+            - 0
+            - 0.035
+            - 0
+            - 0
+            - 0
+            ixx: 0.0003581
+            ixy: 0
+            ixz: 0
+            iyy: 0.0005287
+            iyz: 0
+            izz: 0.000191
+          joint:
+            p_name: forearm
+            j_name: palm_forearm
+            j_type: fixed
+            j_axis: 
+            j_limit: 
+            j_effort: 
+            j_velocity: 
+            j_damping: 
+            friction: 
+    FF:
+      Links:
+        knuckle_FF:
+          link_name: knuckle_FF
+          pose:
+          - -0.033
+          - 0.0461
+          - 1.48277
+          - -0.698132
+          - 0
+          - 0
+          mass: 0.008
+          inertial:
+            pose_i:
+            - 0
+            - 0
+            - 0
+            - 0
+            - 0
+            - 0
+            ixx: 2.6e-07
+            ixy: 0
+            ixz: 0
+            iyy: 2.6e-07
+            iyz: 0
+            izz: 3.2e-07
+          joint:
+            p_name: palm
+            j_name: J4_FF
+            j_type: revolute
+            j_axis:
+            - 0
+            - 0.766044
+            - -0.642788
+            j_limit:
+            - -0.349066
+            - 0.349066
+            j_effort: 2.0
+            j_velocity: 2.0
+            j_damping: 0.1
+            friction: 
+        proximal_FF:
+          link_name: proximal_FF
+          pose:
+          - -0.033
+          - 0.0461
+          - 1.48277
+          - -0.698132
+          - 0
+          - 0
+          mass: 0.03
+          inertial:
+            pose_i:
+            - 0
+            - 0
+            - 0.0225
+            - 0
+            - 0
+            - 0
+            ixx: 9.8e-06
+            ixy: 0
+            ixz: 0
+            iyy: 1.0e-05
+            iyz: 0
+            izz: 1.8e-06
+          joint:
+            p_name: knuckle_FF
+            j_name: J3_FF
+            j_type: revolute
+            j_axis:
+            - 1
+            - 0
+            - 0
+            j_limit:
+            - 0
+            - 1.5708
+            j_effort: 2.0
+            j_velocity: 2.0
+            j_damping: 0.1
+            friction: 
+        middle_FF:
+          link_name: middle_FF
+          pose:
+          - -0.033
+          - 0.07499
+          - 1.5172459999999999
+          - -0.698132
+          - 0
+          - 0
+          mass: 0.017
+          inertial:
+            pose_i:
+            - 0
+            - 0
+            - 0.0125
+            - 0
+            - 0
+            - 0
+            ixx: 2.6e-06
+            ixy: 0
+            ixz: 0
+            iyy: 2.7e-06
+            iyz: 0
+            izz: 8.7e-07
+          joint:
+            p_name: proximal_FF
+            j_name: J2_FF
+            j_type: revolute
+            j_axis:
+            - 1
+            - 0
+            - 0
+            j_limit:
+            - 0
+            - 1.5708
+            j_effort: 2.0
+            j_velocity: 2.0
+            j_damping: 0.1
+            friction: 
+        distal_FF:
+          link_name: distal_FF
+          pose:
+          - -0.033
+          - 0.09106
+          - 1.5363969999999998
+          - -0.698132
+          - 0
+          - 0
+          mass: 0.012
+          inertial:
+            pose_i:
+            - 0
+            - 0
+            - 0.012
+            - 0
+            - 0
+            - 0
+            ixx: 9.4e-07
+            ixy: 0
+            ixz: 0
+            iyy: 1.1e-06
+            iyz: 0
+            izz: 5.3e-07
+          joint:
+            p_name: middle_FF
+            j_name: J1_FF
+            j_type: revolute
+            j_axis:
+            - 1
+            - 0
+            - 0
+            j_limit:
+            - 0
+            - 1.5708
+            j_effort: 2.0
+            j_velocity: 2.0
+            j_damping: 0.1
+            friction: 
+    MF:
+      Links:
+        knuckle_MF:
+          link_name: knuckle_MF
+          pose:
+          - -0.011000000000000003
+          - 0.048636
+          - 1.485838
+          - -0.698132
+          - 0
+          - 0
+          mass: 0.008
+          inertial:
+            pose_i:
+            - 0
+            - 0
+            - 0
+            - 0
+            - 0
+            - 0
+            ixx: 2.6e-07
+            ixy: 0
+            ixz: 0
+            iyy: 2.6e-07
+            iyz: 0
+            izz: 3.2e-07
+          joint:
+            p_name: palm
+            j_name: J4_MF
+            j_type: revolute
+            j_axis:
+            - 0
+            - 0.766044
+            - -0.642788
+            j_limit:
+            - -0.349066
+            - 0.349066
+            j_effort: 2.0
+            j_velocity: 2.0
+            j_damping: 0.1
+            friction: 
+        proximal_MF:
+          link_name: proximal_MF
+          pose:
+          - -0.011000000000000003
+          - 0.048636
+          - 1.485838
+          - -0.698132
+          - 0
+          - 0
+          mass: 0.03
+          inertial:
+            pose_i:
+            - 0
+            - 0
+            - 0.0225
+            - 0
+            - 0
+            - 0
+            ixx: 9.8e-06
+            ixy: 0
+            ixz: 0
+            iyy: 1.0e-05
+            iyz: 0
+            izz: 1.8e-06
+          joint:
+            p_name: knuckle_MF
+            j_name: J3_MF
+            j_type: revolute
+            j_axis:
+            - 1
+            - 0
+            - 0
+            j_limit:
+            - 0
+            - 1.5708
+            j_effort: 2.0
+            j_velocity: 2.0
+            j_damping: 0.1
+            friction: 
+        middle_MF:
+          link_name: middle_MF
+          pose:
+          - -0.011000000000000003
+          - 0.077526
+          - 1.520314
+          - -0.698132
+          - 0
+          - 0
+          mass: 0.017
+          inertial:
+            pose_i:
+            - 0
+            - 0
+            - 0.0125
+            - 0
+            - 0
+            - 0
+            ixx: 2.6e-06
+            ixy: 0
+            ixz: 0
+            iyy: 2.7e-06
+            iyz: 0
+            izz: 8.7e-07
+          joint:
+            p_name: proximal_MF
+            j_name: J2_MF
+            j_type: revolute
+            j_axis:
+            - 1
+            - 0
+            - 0
+            j_limit:
+            - 0
+            - 1.5708
+            j_effort: 2.0
+            j_velocity: 2.0
+            j_damping: 0.1
+            friction: 
+        distal_MF:
+          link_name: distal_MF
+          pose:
+          - -0.011000000000000003
+          - 0.093596
+          - 1.5394649999999999
+          - -0.698132
+          - 0
+          - 0
+          mass: 0.012
+          inertial:
+            pose_i:
+            - 0
+            - 0
+            - 0.012
+            - 0
+            - 0
+            - 0
+            ixx: 9.4e-07
+            ixy: 0
+            ixz: 0
+            iyy: 1.1e-06
+            iyz: 0
+            izz: 5.3e-07
+          joint:
+            p_name: middle_MF
+            j_name: J1_MF
+            j_type: revolute
+            j_axis:
+            - 1
+            - 0
+            - 0
+            j_limit:
+            - 0
+            - 1.5708
+            j_effort: 2.0
+            j_velocity: 2.0
+            j_damping: 0.1
+            friction: 
+    RF:
+      Links:
+        knuckle_RF:
+          link_name: knuckle_RF
+          pose:
+          - 0.010999999999999996
+          - 0.0461
+          - 1.48277
+          - -0.698132
+          - 0
+          - 0
+          mass: 0.008
+          inertial:
+            pose_i:
+            - 0
+            - 0
+            - 0
+            - 0
+            - 0
+            - 0
+            ixx: 2.6e-07
+            ixy: 0
+            ixz: 0
+            iyy: 2.6e-07
+            iyz: 0
+            izz: 3.2e-07
+          joint:
+            p_name: palm
+            j_name: J4_RF
+            j_type: revolute
+            j_axis:
+            - 0
+            - 0.766044
+            - -0.642788
+            j_limit:
+            - -0.349066
+            - 0.349066
+            j_effort: 2.0
+            j_velocity: 2.0
+            j_damping: 0.1
+            friction: 
+        proximal_RF:
+          link_name: proximal_RF
+          pose:
+          - 0.010999999999999996
+          - 0.0461
+          - 1.48277
+          - -0.698132
+          - 0
+          - 0
+          mass: 0.03
+          inertial:
+            pose_i:
+            - 0
+            - 0
+            - 0.0225
+            - 0
+            - 0
+            - 0
+            ixx: 9.8e-06
+            ixy: 0
+            ixz: 0
+            iyy: 1.0e-05
+            iyz: 0
+            izz: 1.8e-06
+          joint:
+            p_name: knuckle_RF
+            j_name: J3_RF
+            j_type: revolute
+            j_axis:
+            - 1
+            - 0
+            - 0
+            j_limit:
+            - 0
+            - 1.5708
+            j_effort: 2.0
+            j_velocity: 2.0
+            j_damping: 0.1
+            friction: 
+        middle_RF:
+          link_name: middle_RF
+          pose:
+          - 0.010999999999999996
+          - 0.07499
+          - 1.5172459999999999
+          - -0.698132
+          - 0
+          - 0
+          mass: 0.017
+          inertial:
+            pose_i:
+            - 0
+            - 0
+            - 0.0125
+            - 0
+            - 0
+            - 0
+            ixx: 2.6e-06
+            ixy: 0
+            ixz: 0
+            iyy: 2.7e-06
+            iyz: 0
+            izz: 8.7e-07
+          joint:
+            p_name: proximal_RF
+            j_name: J2_RF
+            j_type: revolute
+            j_axis:
+            - 1
+            - 0
+            - 0
+            j_limit:
+            - 0
+            - 1.5708
+            j_effort: 2.0
+            j_velocity: 2.0
+            j_damping: 0.1
+            friction: 
+        distal_RF:
+          link_name: distal_RF
+          pose:
+          - 0.010999999999999996
+          - 0.09106
+          - 1.5363969999999998
+          - -0.698132
+          - 0
+          - 0
+          mass: 0.012
+          inertial:
+            pose_i:
+            - 0
+            - 0
+            - 0.012
+            - 0
+            - 0
+            - 0
+            ixx: 9.4e-07
+            ixy: 0
+            ixz: 0
+            iyy: 1.1e-06
+            iyz: 0
+            izz: 5.3e-07
+          joint:
+            p_name: middle_RF
+            j_name: J1_RF
+            j_type: revolute
+            j_axis:
+            - 1
+            - 0
+            - 0
+            j_limit:
+            - 0
+            - 1.5708
+            j_effort: 2.0
+            j_velocity: 2.0
+            j_damping: 0.1
+            friction: 
+    TH:
+      Links:
+        thbase:
+          link_name: thbase
+          pose:
+          - -0.034
+          - -0.0028710000000000003
+          - 1.437679
+          - 0.870557
+          - 0.572429
+          - -2.5703
+          mass: 0.01
+          inertial:
+            pose_i:
+            - 0
+            - 0
+            - 0
+            - 0
+            - 0
+            - 0
+            ixx: 1.6e-07
+            ixy: 0
+            ixz: 0
+            iyy: 1.6e-07
+            iyz: 0
+            izz: 1.6e-07
+          joint:
+            p_name: palm
+            j_name: THJ5
+            j_type: revolute
+            j_axis:
+            - 0
+            - 0
+            - 0.541675
+            j_limit:
+            - -1.0472
+            - 1.0472
+            j_effort: 5.0
+            j_velocity: 4.0
+            j_damping: 0.2
+            friction: 
+        thproximal:
+          link_name: thproximal
+          pose:
+          - -0.034
+          - -0.0028710000000000003
+          - 1.437679
+          - 0.870557
+          - 0.572429
+          - -2.5703
+          mass: 0.04
+          inertial:
+            pose_i:
+            - 0
+            - 0
+            - 0.021111
+            - 0
+            - 0
+            - 0
+            ixx: 1.36e-05
+            ixy: 0
+            ixz: 0
+            iyy: 1.36e-05
+            iyz: 0
+            izz: 3.13e-06
+          joint:
+            p_name: thbase
+            j_name: THJ4
+            j_type: revolute
+            j_axis:
+            - -0.707107
+            - -0.454519
+            - -0.541675
+            j_limit:
+            - 0
+            - 1.22173
+            j_effort: 3.0
+            j_velocity: 4.0
+            j_damping: 0.2
+            friction: 
+        thhub:
+          link_name: thhub
+          pose:
+          - -0.06087000000000001
+          - 0.014400999999999999
+          - 1.4582629999999999
+          - 0.870557
+          - 0.572429
+          - -2.5703
+          mass: 0.005
+          inertial:
+            pose_i:
+            - 0
+            - 0
+            - 0
+            - 0
+            - 0
+            - 0
+            ixx: 1.0e-06
+            ixy: 0
+            ixz: 0
+            iyy: 1.0e-06
+            iyz: 0
+            izz: 3.0e-07
+          joint:
+            p_name: thproximal
+            j_name: THJ3
+            j_type: fixed
+            j_axis:
+            - 1
+            - 0
+            - 0
+            j_limit: 
+            j_effort: 
+            j_velocity: 
+            j_damping: 
+            friction: 
+        thmiddle:
+          link_name: thmiddle
+          pose:
+          - -0.06087000000000001
+          - 0.014400999999999999
+          - 1.4582629999999999
+          - 0.870557
+          - 0.572429
+          - -2.5703
+          mass: 0.02
+          inertial:
+            pose_i:
+            - 0
+            - 0
+            - 0.16
+            - 0
+            - 0
+            - 0
+            ixx: 5.1e-06
+            ixy: 0
+            ixz: 0
+            iyy: 5.1e-06
+            iyz: 0
+            izz: 1.21e-06
+          joint:
+            p_name: thhub
+            j_name: THJ2
+            j_type: revolute
+            j_axis:
+            - 0
+            - -0.766044
+            - 0.642788
+            j_limit:
+            - -0.698132
+            - 0.698132
+            j_effort: 2.0
+            j_velocity: 2.0
+            j_damping: 0.1
+            friction: 
+        thdistal:
+          link_name: thdistal
+          pose:
+          - -0.083498
+          - 0.028946
+          - 1.475596
+          - -0.785398
+          - 0.698132
+          - 1.5707999999999998
+          mass: 0.016
+          inertial:
+            pose_i:
+            - 0
+            - 0
+            - 0.014559
+            - 0
+            - 0
+            - 0
+            ixx: 2.1e-06
+            ixy: 0
+            ixz: 0
+            iyy: 2.2e-06
+            iyz: 0
+            izz: 1.0e-06
+          joint:
+            p_name: thmiddle
+            j_name: THJ1
+            j_type: revolute
+            j_axis:
+            - 0
+            - -0.766044
+            - 0.642788
+            j_limit:
+            - 0
+            - 1.5708
+            j_effort: 1.0
+            j_velocity: 4.0
+            j_damping: 0.2
+            friction: 
+  KUKA:
+    Body:
+      Links:
+        lbr_iiwa_link_0:
+          link_name: lbr_iiwa_link_0
+          pose:
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          mass: 5
+          inertial:
+            pose_i:
+            - -0.1
+            - 0
+            - 0.07
+            - 0
+            - 0
+            - 0
+            ixx: 0.05
+            ixy: 0
+            ixz: 0
+            iyy: 0.06
+            iyz: 0
+            izz: 0.03
+          joint:
+            p_name: world
+            j_name: world
+            j_type: fixed
+            j_axis: 
+            j_limit: 
+            j_effort: 
+            j_velocity: 
+            j_damping: 
+            friction: 
+        lbr_iiwa_link_1:
+          link_name: lbr_iiwa_link_1
+          pose:
+          - 0
+          - 0
+          - 0.1575
+          - 0
+          - 0
+          - 0
+          mass: 3.4525
+          inertial:
+            pose_i:
+            - 0
+            - 0.03
+            - 0.12
+            - 0
+            - 0
+            - 0
+            ixx: 0.1
+            ixy: 0
+            ixz: 0
+            iyy: 0.09
+            iyz: 0
+            izz: 0.02
+          joint:
+            p_name: lbr_iiwa_link_0
+            j_name: J0
+            j_type: revolute
+            j_axis:
+            - 0
+            - 0
+            - 1
+            j_limit:
+            - -2.96706
+            - 2.96706
+            j_effort: 300
+            j_velocity: 10
+            j_damping: 0.5
+            friction: 0
+        lbr_iiwa_link_2:
+          link_name: lbr_iiwa_link_2
+          pose:
+          - 0
+          - 0
+          - 0.36
+          - 1.5708
+          - 0
+          - -3.14159
+          mass: 3.4821
+          inertial:
+            pose_i:
+            - 0.0003
+            - 0.059
+            - 0.042
+            - 0
+            - 0
+            - 0
+            ixx: 0.05
+            ixy: 0
+            ixz: 0
+            iyy: 0.018
+            iyz: 0
+            izz: 36
+          joint:
+            p_name: lbr_iiwa_link_1
+            j_name: J1
+            j_type: revolute
+            j_axis:
+            - 0
+            - 0
+            - 1
+            j_limit:
+            - -2.0944
+            - 2.0944
+            j_effort: 300
+            j_velocity: 10
+            j_damping: 0.5
+            friction: 0
+        lbr_iiwa_link_3:
+          link_name: lbr_iiwa_link_3
+          pose:
+          - 0
+          - 0
+          - 0.5645
+          - 0
+          - 0
+          - 0
+          mass: 4.05623
+          inertial:
+            pose_i:
+            - 0
+            - 0.03
+            - 0.13
+            - 0
+            - 0
+            - 0
+            ixx: 0.08
+            ixy: 0
+            ixz: 0
+            iyy: 0.075
+            iyz: 0
+            izz: 0.01
+          joint:
+            p_name: lbr_iiwa_link_2
+            j_name: J2
+            j_type: revolute
+            j_axis:
+            - 0
+            - 0
+            - 1
+            j_limit:
+            - -2.96706
+            - 2.96706
+            j_effort: 300
+            j_velocity: 10
+            j_damping: 0.5
+            friction: 0
+        lbr_iiwa_link_4:
+          link_name: lbr_iiwa_link_4
+          pose:
+          - 0
+          - 0
+          - 0.78
+          - 1.5708
+          - 0
+          - 0
+          mass: 3.4822
+          inertial:
+            pose_i:
+            - 0
+            - 0.067
+            - 0
+            - 0.034
+            - 0
+            - 0
+            ixx: 0.03
+            ixy: 0
+            ixz: 0
+            iyy: 0.01
+            iyz: 0
+            izz: 0.029
+          joint:
+            p_name: lbr_iiwa_link_3
+            j_name: J3
+            j_type: revolute
+            j_axis:
+            - 0
+            - 0
+            - 1
+            j_limit:
+            - -2.0944
+            - 2.0944
+            j_effort: 300
+            j_velocity: 10
+            j_damping: 0.5
+            friction: 0
+        lbr_iiwa_link_5:
+          link_name: lbr_iiwa_link_5
+          pose:
+          - 0
+          - 0
+          - 0.9645
+          - 0
+          - 0
+          - -3.14159
+          mass: 2.1633
+          inertial:
+            pose_i:
+            - 0.0001
+            - 0.021
+            - 0.076
+            - 0
+            - 0
+            - 0
+            ixx: 0.02
+            ixy: 0
+            ixz: 0
+            iyy: 0.018
+            iyz: 0
+            izz: 0.005
+          joint:
+            p_name: lbr_iiwa_link_4
+            j_name: J4
+            j_type: revolute
+            j_axis:
+            - 0
+            - 0
+            - 1
+            j_limit:
+            - -2.96706
+            - 2.96706
+            j_effort: 300
+            j_velocity: 10
+            j_damping: 0.5
+            friction: 0
+        lbr_iiwa_link_6:
+          link_name: lbr_iiwa_link_6
+          pose:
+          - 0
+          - 0
+          - 1.18
+          - 1.5708
+          - 0
+          - -3.14159
+          mass: 2.3466
+          inertial:
+            pose_i:
+            - 0
+            - 0.0006
+            - 0.0004
+            - 0
+            - 0
+            - 0
+            ixx: 0.005
+            ixy: 0
+            ixz: 0
+            iyy: 0.0036
+            iyz: 0
+            izz: 0.0047
+          joint:
+            p_name: lbr_iiwa_link_5
+            j_name: J5
+            j_type: revolute
+            j_axis:
+            - 0
+            - 0
+            - 1
+            j_limit:
+            - -2.0944
+            - 2.0944
+            j_effort: 300
+            j_velocity: 10
+            j_damping: 0.5
+            friction: 0
+        lbr_iiwa_link_7:
+          link_name: lbr_iiwa_link_7
+          pose:
+          - 0
+          - 0
+          - 1.261
+          - 0
+          - 0
+          - 0
+          mass: 3.129
+          inertial:
+            pose_i:
+            - 0
+            - 0
+            - 0.02
+            - 0
+            - 0
+            - 0
+            ixx: 0.001
+            ixy: 0
+            ixz: 0
+            iyy: 0.001
+            iyz: 0
+            izz: 0.001
+          joint:
+            p_name: lbr_iiwa_link_6
+            j_name: J6
+            j_type: revolute
+            j_axis:
+            - 0
+            - 0
+            - 1
+            j_limit:
+            - -3.05433
+            - 3.05433
+            j_effort: 300
+            j_velocity: 10
+            j_damping: 0.5
+            friction: 0
